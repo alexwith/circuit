@@ -9,6 +9,7 @@ type State = {
 
 type Actions = {
   updatePos: (modifier: (prev: Pos) => Pos) => void;
+  updateZoom: (modifier: (prev: number) => number) => void;
   zoomToPoint: (target: Pos, zoom: number) => void;
 };
 
@@ -19,6 +20,10 @@ export const useCanvasStore = create<State & Actions>((set) => ({
   updatePos: (modifier: (prev: Pos) => Pos) =>
     set((state) => ({
       pos: modifier(state.pos),
+    })),
+  updateZoom: (modifier: (prev: number) => number) =>
+    set((state) => ({
+      zoom: modifier(state.zoom),
     })),
   zoomToPoint: (target: Pos, zoom: number) =>
     set((state) => {
