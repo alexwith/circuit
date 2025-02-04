@@ -1,21 +1,32 @@
 import { create } from "zustand";
-import { Pos } from "../common/types";
+import { Pos, ToolType } from "../common/types";
 import { MAX_ZOOM, MIN_ZOOM } from "../common/constants";
+import { EntityType } from "../entities/entityType";
+import CanvasEntity from "../entities/CanvasEntity";
 
 type State = {
   pos: Pos;
   zoom: number;
+  tool: ToolType;
+  entities: CanvasEntity[];
+  addingEntity: EntityType | null;
 };
 
 type Actions = {
   updatePos: (modifier: (prev: Pos) => Pos) => void;
   updateZoom: (modifier: (prev: number) => number) => void;
   zoomToPoint: (target: Pos, zoom: number) => void;
+  setTool: (tool: ToolType) => void;
+  addEntity: (entity: CanvasEntity) => void;
+  setAddingEntity: (entity: EntityType) => void;
 };
 
 export const useCanvasStore = create<State & Actions>((set) => ({
   pos: { x: 0, y: 0 },
   zoom: 1,
+  tool: ToolType.Move,
+  entities: [],
+  addingEntity: null,
 
   updatePos: (modifier: (prev: Pos) => Pos) =>
     set((state) => ({
@@ -44,4 +55,15 @@ export const useCanvasStore = create<State & Actions>((set) => ({
         pos: { x, y },
       };
     }),
+  setTool: (tool: ToolType) => set(() => ({ tool })),
+  addEntity: (entity: CanvasEntity) =>
+    set((state) => {
+      return {
+        entities: [...state.entities, entity],
+      };
+    }),
+  setAddingEntity: (entity: EntityType) =>
+    set(() => ({
+      addingEntity: entity,
+    })),
 }));

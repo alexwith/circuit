@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import Canvas from "./Canvas";
+import Canvas from "./canvas/Canvas";
 import MoveControl from "./MoveControl";
 import { useCanvasStore } from "../../store/canvasStore";
 import { AUTO_CENTER_STEPS } from "../../common/constants";
