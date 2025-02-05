@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import { Pos } from "../../../common/types";
-import { useCanvasStore } from "../../../store/canvasStore";
 
 type Props = {
   pos: Pos;
@@ -8,16 +7,14 @@ type Props = {
 };
 
 export default function CanvasElement({ pos, element }: Props) {
-  const zoom = useCanvasStore((state) => state.zoom);
-  const canvasPos = useCanvasStore((state) => state.pos);
-
   return (
-    <foreignObject
-      width="100%"
-      height="100%"
-      transform={`translate(${pos.x * zoom + canvasPos.x}, ${pos.y * zoom + canvasPos.y}) scale(${zoom})`}
+    <div
+      className={`absolute z-20`}
+      style={{
+        transform: `translate(${pos.x}px, ${pos.y}px)`,
+      }}
     >
       {element}
-    </foreignObject>
+    </div>
   );
 }

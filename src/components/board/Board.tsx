@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import Canvas from "./canvas/Canvas";
-import MoveControl from "./MoveControl";
+import Control from "./control/Control";
 import { useCanvasStore } from "../../store/canvasStore";
 import { AUTO_CENTER_STEPS } from "../../common/constants";
 import LogicBuilder from "../logicbuilder/LogicBuilder";
@@ -39,9 +39,9 @@ export default function Board() {
   };
 
   return (
-    <div className="relative w-full h-full overflow-hidden" ref={boardRef}>
+    <div className="relative flex-grow w-full h-full overflow-hidden" ref={boardRef}>
       <Canvas />
-      <MoveControl
+      <Control
         onZoomIn={() => {
           handleDefaultZoom(0.25);
         }}

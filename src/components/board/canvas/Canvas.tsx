@@ -80,23 +80,35 @@ export default function Canvas() {
         height={25 * zoom}
         patternUnits="userSpaceOnUse"
       >
-        <circle cx={1 * zoom} cy={1 * zoom} r={1 * zoom} fill="var(--color-gray-800)" />
+        <circle
+          cx={1 * zoom}
+          cy={1 * zoom}
+          r={1 * zoom}
+          className="fill-dark-light dark:fill-light-dark"
+        />
       </pattern>
       <rect x="0" y="0" width="100%" height="100%" fill="url(#background-dots)" />
-      {entities.map((entity) => {
-        return (
-          <CanvasElement
-            pos={entity.pos}
-            element={
-              <Terminal
-                entity={{
-                  pos: entity.pos,
-                }}
-              />
-            }
-          />
-        );
-      })}
+      <foreignObject
+        className="overflow-visible"
+        width="100%"
+        height="100%"
+        transform={`translate(${pos.x}, ${pos.y}) scale(${zoom})`}
+      >
+        {entities.map((entity) => {
+          return (
+            <CanvasElement
+              pos={entity.pos}
+              element={
+                <Terminal
+                  entity={{
+                    pos: entity.pos,
+                  }}
+                />
+              }
+            />
+          );
+        })}
+      </foreignObject>
     </svg>
   );
 }
