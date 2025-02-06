@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { ChevronDownIcon, ChevronUpIcon } from "../../common/icons";
+import { ChevronDownIcon, ChevronUpIcon } from "../../../common/icons";
 import DraggableLogic from "./DraggableLogic";
+import Terminal from "../elements/Terminal";
+import { EntityType, Flow } from "../../../common/types";
 
-export default function LogicBuilder() {
+export default function LogicComponents() {
   const [expanded, setExpanded] = useState<boolean>(false);
 
   return (
@@ -14,19 +16,27 @@ export default function LogicBuilder() {
         }}
       >
         <div
-          className="flex justify-between items-center px-3 py-1 hover:cursor-pointer"
+          className="flex justify-between items-center px-3 py-1 text-dark dark:text-light hover:cursor-pointer"
           onClick={() => setExpanded(!expanded)}
         >
-          <h1 className="text-dark dark:text-light font-medium select-none">Logic</h1>
+          <h1 className="font-medium select-none">Components</h1>
           {expanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
         </div>
         <div className="w-full h-0.25 bg-dark-light dark:bg-light-dark" />
         <div className="flex flex-col gap-4 px-3 py-1">
           <div>
-            <h1 className="select-none text-violet-400 font-medium">Core</h1>
+            <h1 className="select-none text-violet-400 font-medium">Terminals</h1>
             <div className="relative flex flex-col gap-1">
-              <DraggableLogic name="In Terminal" />
-              <DraggableLogic name="Out Terminal" />
+              <DraggableLogic
+                name="In Terminal"
+                displayElement={<Terminal flow={Flow.In} />}
+                template={{ type: EntityType.InTerminal }}
+              />
+              <DraggableLogic
+                name="Out Terminal"
+                displayElement={<Terminal flow={Flow.Out} />}
+                template={{ type: EntityType.OutTerminal }}
+              />
             </div>
           </div>
           <div>

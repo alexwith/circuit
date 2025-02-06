@@ -3,7 +3,7 @@ import Canvas from "./canvas/Canvas";
 import Control from "./control/Control";
 import { useCanvasStore } from "../../store/canvasStore";
 import { AUTO_CENTER_STEPS } from "../../common/constants";
-import LogicBuilder from "../logicbuilder/LogicBuilder";
+import LogicComponents from "./logiccomponents/LogicComponents";
 
 export default function Board() {
   const boardRef = useRef<HTMLDivElement>(null);
@@ -50,7 +50,7 @@ export default function Board() {
         }}
         onCenter={handleCenterCanvas}
       />
-      <LogicBuilder />
+      <LogicComponents />
     </div>
   );
 }

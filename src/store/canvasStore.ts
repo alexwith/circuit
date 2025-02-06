@@ -1,15 +1,15 @@
 import { create } from "zustand";
 import { Pos, ToolType } from "../common/types";
 import { MAX_ZOOM, MIN_ZOOM } from "../common/constants";
-import { EntityType } from "../entities/entityType";
-import CanvasEntity from "../entities/CanvasEntity";
+import { CanvasEntity } from "../entities/canvas/CanvasEntity";
+import { TemplateEntity } from "../entities/other/TemplateEntity";
 
 type State = {
   pos: Pos;
   zoom: number;
   tool: ToolType;
   entities: CanvasEntity[];
-  addingEntity: EntityType | null;
+  pendingEntity: TemplateEntity | null;
 };
 
 type Actions = {
@@ -18,7 +18,7 @@ type Actions = {
   zoomToPoint: (target: Pos, zoom: number) => void;
   setTool: (tool: ToolType) => void;
   addEntity: (entity: CanvasEntity) => void;
-  setAddingEntity: (entity: EntityType | null) => void;
+  setPendingEntity: (entity: TemplateEntity | null) => void;
 };
 
 export const useCanvasStore = create<State & Actions>((set) => ({
@@ -26,7 +26,7 @@ export const useCanvasStore = create<State & Actions>((set) => ({
   zoom: 1,
   tool: ToolType.Move,
   entities: [],
-  addingEntity: null,
+  pendingEntity: null,
 
   updatePos: (modifier: (prev: Pos) => Pos) =>
     set((state) => ({
@@ -62,8 +62,8 @@ export const useCanvasStore = create<State & Actions>((set) => ({
         entities: [...state.entities, entity],
       };
     }),
-  setAddingEntity: (entity: EntityType | null) =>
+  setPendingEntity: (entity: TemplateEntity | null) =>
     set(() => ({
-      addingEntity: entity,
+      pendingEntity: entity,
     })),
 }));

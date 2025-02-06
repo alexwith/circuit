@@ -1,10 +1,11 @@
 import { DragEvent, useEffect, useRef } from "react";
 import { usePersistentDrag } from "../../../hooks/usePersistentDrag";
 import { useCanvasStore } from "../../../store/canvasStore";
-import Terminal from "../../logicbuilder/terminal/Terminal";
-import TerminalEntity from "../../../entities/TerminalEntity";
+import Terminal from "../elements/Terminal";
+import { TerminalEntity } from "../../../entities/canvas/TerminalEntity";
 import CanvasElement from "./CanvasElement";
-import { ToolType } from "../../../common/types";
+import { EntityType, Flow, ToolType } from "../../../common/types";
+import { isTerminal } from "../../../libs/logicUtil";
 
 export default function Canvas() {
   const ref = useRef<SVGSVGElement>(null);
@@ -13,7 +14,7 @@ export default function Canvas() {
   const tool = useCanvasStore((state) => state.tool);
   const pos = useCanvasStore((state) => state.pos);
   const entities = useCanvasStore((state) => state.entities);
-  const addingEntity = useCanvasStore((state) => state.addingEntity);
+  const pendingEntity = useCanvasStore((state) => state.pendingEntity);
 
   const zoomToPoint = useCanvasStore((state) => state.zoomToPoint);
   const updatePos = useCanvasStore((state) => state.updatePos);
@@ -45,7 +46,7 @@ export default function Canvas() {
   }, [ref, pos, updatePos, zoomToPoint]);
 
   const handleDrop = (event: DragEvent) => {
-    if (!addingEntity || !ref.current) {
+    if (pendingEntity === null || !ref.current) {
       return;
     }
 
@@ -54,7 +55,19 @@ export default function Canvas() {
     const dropX = (event.clientX - canvasRect.left - pos.x) / zoom;
     const dropY = (event.clientY - canvasRect.top - pos.y) / zoom;
 
-    addEntity(new TerminalEntity({ x: dropX, y: dropY }));
+    let entity = null;
+    if (isTerminal(pendingEntity.type)) {
+      entity = new TerminalEntity(
+        { x: dropX, y: dropY },
+        pendingEntity.type === EntityType.InTerminal ? Flow.In : Flow.Out,
+      );
+    }
+
+    if (!entity) {
+      return;
+    }
+
+    addEntity(entity);
   };
 
   const handleDragOver = (event: DragEvent) => {
@@ -98,13 +111,7 @@ export default function Canvas() {
           return (
             <CanvasElement
               pos={entity.pos}
-              element={
-                <Terminal
-                  entity={{
-                    pos: entity.pos,
-                  }}
-                />
-              }
+              element={<Terminal entity={entity} flow={entity.flow} />}
             />
           );
         })}

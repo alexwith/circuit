@@ -32,7 +32,7 @@ export default function Control({ onZoomIn, onZoomOut, onCenter }: Props) {
         <ControlButton icon={<CenterIcon size={20} />} onClick={onCenter} />
         <ControlButton
           icon={
-            tool === ToolType.Move ? <MoveToolIcon size={20} /> : <InteractToolIcon size={20} />
+            tool === ToolType.Interact ? <MoveToolIcon size={20} /> : <InteractToolIcon size={20} />
           }
           onClick={handleToolClick}
         />

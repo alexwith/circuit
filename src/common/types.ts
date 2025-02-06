@@ -7,3 +7,13 @@ export enum ToolType {
   Move,
   Interact,
 }
+
+export enum Flow {
+  In,
+  Out,
+}
+
+export enum EntityType {
+  OutTerminal,
+  InTerminal,
+}
