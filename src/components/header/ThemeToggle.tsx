@@ -1,14 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DarkThemeIcon, LightThemeIcon } from "../../common/icons";
+import { isDarkTheme } from "../../libs/themeUtil";
 
 export default function ThemeToggle() {
   const [darkTheme, setDarkTheme] = useState<boolean>(false);
 
   const handleThemeToggle = () => {
+    localStorage.theme = darkTheme ? "light" : "dark";
     setDarkTheme(!darkTheme);
 
-    document.documentElement.classList.toggle("dark");
+    document.documentElement.classList.toggle("dark", isDarkTheme());
   };
+
+  useEffect(() => {
+    const isDark = isDarkTheme();
+    document.documentElement.classList.toggle("dark", isDark);
+
+    setDarkTheme(isDark);
+  }, [setDarkTheme]);
 
   return (
     <div

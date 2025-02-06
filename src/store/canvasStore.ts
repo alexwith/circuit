@@ -18,7 +18,7 @@ type Actions = {
   zoomToPoint: (target: Pos, zoom: number) => void;
   setTool: (tool: ToolType) => void;
   addEntity: (entity: CanvasEntity) => void;
-  setAddingEntity: (entity: EntityType) => void;
+  setAddingEntity: (entity: EntityType | null) => void;
 };
 
 export const useCanvasStore = create<State & Actions>((set) => ({
@@ -62,7 +62,7 @@ export const useCanvasStore = create<State & Actions>((set) => ({
         entities: [...state.entities, entity],
       };
     }),
-  setAddingEntity: (entity: EntityType) =>
+  setAddingEntity: (entity: EntityType | null) =>
     set(() => ({
       addingEntity: entity,
     })),
