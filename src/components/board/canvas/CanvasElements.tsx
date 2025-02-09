@@ -9,6 +9,7 @@ import { PinEntity } from "../../../entities/canvas/PinEntity";
 import { WireEntity } from "../../../entities/canvas/WireEntity";
 import Wire from "../elements/Wire";
 import { Pos } from "../../../common/types";
+import Gate from "../elements/Gate";
 
 type Props = {
   canvasRef: RefObject<SVGSVGElement>;
@@ -53,11 +54,17 @@ export default function CanvasElements({ canvasRef }: Props) {
 
   return (
     <>
-      {entities.map((entity) => {
+      <CanvasElement pos={{ x: 100, y: 100 }} zIndex={0} element={<Gate />} />
+      {entities.map((entity, key) => {
         const element = createElement(entity);
         return (
           element && (
-            <CanvasElement pos={entity.getPos()} zIndex={entity.getZIndex()} element={element} />
+            <CanvasElement
+              key={key}
+              pos={entity.getPos()}
+              zIndex={entity.getZIndex()}
+              element={element}
+            />
           )
         );
       })}

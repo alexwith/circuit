@@ -3,8 +3,12 @@ import { ChevronDownIcon, ChevronUpIcon } from "../../../common/icons";
 import DraggableLogic from "./DraggableLogic";
 import Terminal from "../elements/Terminal";
 import { EntityType, Flow } from "../../../common/types";
+import { useCanvasStore } from "../../../store/canvasStore";
+import Gate from "../elements/Gate";
 
 export default function LogicComponents() {
+  const gateTypes = useCanvasStore((state) => state.gateTypes);
+
   const [expanded, setExpanded] = useState<boolean>(true);
 
   return (
@@ -41,6 +45,18 @@ export default function LogicComponents() {
           </div>
           <div>
             <h1 className="select-none text-violet-400 font-medium">Circuits</h1>
+            <div className="relative flex flex-col gap-1">
+              {gateTypes.map((gateType, key) => {
+                return (
+                  <DraggableLogic
+                    key={key}
+                    name={gateType.name}
+                    displayElement={<Gate />}
+                    template={{ type: EntityType.InTerminal }}
+                  />
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

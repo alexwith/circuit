@@ -2,7 +2,7 @@ import { DragEvent, useEffect, useRef } from "react";
 import { usePersistentDrag } from "../../../hooks/usePersistentDrag";
 import { useCanvasStore } from "../../../store/canvasStore";
 import { TerminalEntity } from "../../../entities/canvas/TerminalEntity";
-import { EntityType, Flow, ToolType } from "../../../common/types";
+import { EntityType, Flow, Pos, ToolType } from "../../../common/types";
 import { isTerminal } from "../../../libs/logicUtil";
 import CanvasElements from "./CanvasElements";
 
@@ -49,9 +49,10 @@ export default function Canvas() {
     }
 
     const canvasRect = ref.current.getBoundingClientRect();
+    const dropOffset: Pos = JSON.parse(event.dataTransfer.getData("offset"));
 
-    const dropX = (event.clientX - canvasRect.left - pos.x) / zoom;
-    const dropY = (event.clientY - canvasRect.top - pos.y) / zoom;
+    const dropX = (event.clientX - canvasRect.left - pos.x) / zoom - dropOffset.x;
+    const dropY = (event.clientY - canvasRect.top - pos.y) / zoom - dropOffset.y;
 
     let entity = null;
     if (isTerminal(pendingEntity.type)) {

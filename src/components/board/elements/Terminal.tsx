@@ -5,14 +5,14 @@ import { TerminalEntity } from "../../../entities/canvas/TerminalEntity";
 import Pin from "./Pin";
 
 type Props = {
-  entity?: TerminalEntity;
   flow: Flow;
-  onPinClick: (pin: PinEntity) => void;
+  entity?: TerminalEntity;
+  onPinClick?: (pin: PinEntity) => void;
 };
 
-export default function Terminal({ entity, flow, onPinClick }: Props) {
+export default function Terminal({ flow, entity, onPinClick }: Props) {
   const handlePinClick = () => {
-    if (!entity) {
+    if (!entity || !onPinClick) {
       return;
     }
 

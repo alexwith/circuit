@@ -34,11 +34,7 @@ export default function Wire({ entity, points }: Props) {
 
   return (
     <svg className="overflow-visible">
-      <path
-        className="stroke-4 stroke-dark-light dark:stroke-light-dark dark:stroke-red-500"
-        fill="none"
-        d={path}
-      />
+      <path className="stroke-4 stroke-dark-light dark:stroke-light-dark" fill="none" d={path} />
     </svg>
   );
 }

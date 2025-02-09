@@ -3,12 +3,15 @@ import { Pos, ToolType } from "../common/types";
 import { MAX_ZOOM, MIN_ZOOM } from "../common/constants";
 import { CanvasEntity } from "../entities/canvas/CanvasEntity";
 import { TemplateEntity } from "../entities/other/TemplateEntity";
+import { GateTypeEntity } from "../entities/canvas/GateTypeEntity";
+import { defaultCircuits } from "../common/defaultCircuits";
 
 type State = {
   pos: Pos;
   zoom: number;
   tool: ToolType;
   entities: CanvasEntity[];
+  gateTypes: GateTypeEntity[];
   pendingEntity: TemplateEntity | null;
 };
 
@@ -18,6 +21,7 @@ type Actions = {
   zoomToPoint: (target: Pos, zoom: number) => void;
   setTool: (tool: ToolType) => void;
   addEntity: (entity: CanvasEntity) => void;
+  addGateType: (gateType: GateTypeEntity) => void;
   setPendingEntity: (entity: TemplateEntity | null) => void;
 };
 
@@ -26,6 +30,7 @@ export const useCanvasStore = create<State & Actions>((set) => ({
   zoom: 1,
   tool: ToolType.Move,
   entities: [],
+  gateTypes: defaultCircuits,
   pendingEntity: null,
 
   updatePos: (modifier: (prev: Pos) => Pos) =>
@@ -61,6 +66,10 @@ export const useCanvasStore = create<State & Actions>((set) => ({
       return {
         entities: [...state.entities, entity],
       };
+    }),
+  addGateType: (gateType: GateTypeEntity) =>
+    set((state) => {
+      return { gateTypes: [...state.gateTypes, gateType] };
     }),
   setPendingEntity: (entity: TemplateEntity | null) =>
     set(() => ({
