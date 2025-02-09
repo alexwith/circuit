@@ -1,11 +1,7 @@
-import { Flow, Pos } from "../../common/types";
+import { Pos } from "../../common/types";
 
-export class CanvasEntity {
-  pos: Pos;
-  flow: Flow;
+export abstract class CanvasEntity {
+  abstract getPos(): Pos;
 
-  constructor(pos: Pos, flow: Flow) {
-    this.pos = pos;
-    this.flow = flow;
-  }
+  abstract getZIndex(): number;
 }

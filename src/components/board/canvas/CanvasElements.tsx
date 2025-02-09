@@ -1,0 +1,74 @@
+import { useCanvasStore } from "../../../store/canvasStore";
+import WiringWire from "../elements/WiringWire";
+import Terminal from "../elements/Terminal";
+import CanvasElement from "./CanvasElement";
+import { ReactNode, RefObject, useState } from "react";
+import { CanvasEntity } from "../../../entities/canvas/CanvasEntity";
+import { TerminalEntity } from "../../../entities/canvas/TerminalEntity";
+import { PinEntity } from "../../../entities/canvas/PinEntity";
+import { WireEntity } from "../../../entities/canvas/WireEntity";
+import Wire from "../elements/Wire";
+import { Pos } from "../../../common/types";
+
+type Props = {
+  canvasRef: RefObject<SVGSVGElement>;
+};
+
+export default function CanvasElements({ canvasRef }: Props) {
+  const entities = useCanvasStore((state) => state.entities);
+
+  const addEntity = useCanvasStore((state) => state.addEntity);
+
+  const [isWiring, setIsWiring] = useState<boolean>(false);
+  const [wiringStartPin, setWiringStartPin] = useState<PinEntity | null>(null);
+  const [wiringPoints, setWiringPoints] = useState<Pos[]>([{ x: 0, y: 0 }]);
+
+  const handlePinClick = (pin: PinEntity) => {
+    if (isWiring) {
+      setIsWiring(false);
+      addEntity(new WireEntity(wiringStartPin!, pin, wiringPoints));
+    } else {
+      setWiringPoints([pin.getPos()]);
+      setWiringStartPin(pin);
+      setIsWiring(true);
+    }
+  };
+
+  function createElement(entity: CanvasEntity): ReactNode {
+    switch (true) {
+      case entity instanceof TerminalEntity: {
+        const terminal = entity as TerminalEntity;
+        return <Terminal entity={terminal} flow={terminal.flow} onPinClick={handlePinClick} />;
+      }
+      case entity instanceof WireEntity: {
+        const wire = entity as WireEntity;
+        return (
+          <Wire entity={wire} points={[wire.pin0.getPos(), ...wire.points, wire.pin1.getPos()]} />
+        );
+      }
+      default:
+        return null;
+    }
+  }
+
+  return (
+    <>
+      {entities.map((entity) => {
+        const element = createElement(entity);
+        return (
+          element && (
+            <CanvasElement pos={entity.getPos()} zIndex={entity.getZIndex()} element={element} />
+          )
+        );
+      })}
+      {isWiring && (
+        <WiringWire
+          canvasRef={canvasRef}
+          startPos={wiringStartPin!.getPos()}
+          points={wiringPoints}
+          setPoints={setWiringPoints}
+        />
+      )}
+    </>
+  );
+}

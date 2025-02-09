@@ -1,13 +1,24 @@
+import { TERMINAL_PIN_OFFSET } from "../../../common/canvasConfig";
 import { Flow } from "../../../common/types";
+import { PinEntity } from "../../../entities/canvas/PinEntity";
 import { TerminalEntity } from "../../../entities/canvas/TerminalEntity";
 import Pin from "./Pin";
 
 type Props = {
   entity?: TerminalEntity;
   flow: Flow;
+  onPinClick: (pin: PinEntity) => void;
 };
 
-export default function Terminal({ entity, flow }: Props) {
+export default function Terminal({ entity, flow, onPinClick }: Props) {
+  const handlePinClick = () => {
+    if (!entity) {
+      return;
+    }
+
+    onPinClick(entity.pin);
+  };
+
   return (
     <div className="relative w-19 h-8">
       <div
@@ -23,7 +34,7 @@ export default function Terminal({ entity, flow }: Props) {
           top: `${12}px`,
         }}
       />
-      <Pin offset={{ x: flow === Flow.In ? 56 : 0, y: 5.5 }} />
+      <Pin offset={TERMINAL_PIN_OFFSET(flow)} onClick={handlePinClick} />
     </div>
   );
 }

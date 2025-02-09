@@ -3,14 +3,16 @@ import { Pos } from "../../../common/types";
 
 type Props = {
   pos: Pos;
+  zIndex: number;
   element: ReactNode;
 };
 
-export default function CanvasElement({ pos, element }: Props) {
+export default function CanvasElement({ pos, zIndex, element }: Props) {
   return (
     <div
-      className={`absolute z-20`}
+      className="absolute"
       style={{
+        zIndex,
         transform: `translate(${pos.x}px, ${pos.y}px)`,
       }}
     >

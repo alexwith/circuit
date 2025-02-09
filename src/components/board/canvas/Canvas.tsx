@@ -1,11 +1,10 @@
 import { DragEvent, useEffect, useRef } from "react";
 import { usePersistentDrag } from "../../../hooks/usePersistentDrag";
 import { useCanvasStore } from "../../../store/canvasStore";
-import Terminal from "../elements/Terminal";
 import { TerminalEntity } from "../../../entities/canvas/TerminalEntity";
-import CanvasElement from "./CanvasElement";
 import { EntityType, Flow, ToolType } from "../../../common/types";
 import { isTerminal } from "../../../libs/logicUtil";
+import CanvasElements from "./CanvasElements";
 
 export default function Canvas() {
   const ref = useRef<SVGSVGElement>(null);
@@ -13,7 +12,6 @@ export default function Canvas() {
   const zoom = useCanvasStore((state) => state.zoom);
   const tool = useCanvasStore((state) => state.tool);
   const pos = useCanvasStore((state) => state.pos);
-  const entities = useCanvasStore((state) => state.entities);
   const pendingEntity = useCanvasStore((state) => state.pendingEntity);
 
   const zoomToPoint = useCanvasStore((state) => state.zoomToPoint);
@@ -102,19 +100,12 @@ export default function Canvas() {
       </pattern>
       <rect x="0" y="0" width="100%" height="100%" fill="url(#background-dots)" />
       <foreignObject
-        className="overflow-visible"
+        className="relative overflow-visible"
         width="100%"
         height="100%"
         transform={`translate(${pos.x}, ${pos.y}) scale(${zoom})`}
       >
-        {entities.map((entity) => {
-          return (
-            <CanvasElement
-              pos={entity.pos}
-              element={<Terminal entity={entity} flow={entity.flow} />}
-            />
-          );
-        })}
+        <CanvasElements canvasRef={ref} />
       </foreignObject>
     </svg>
   );

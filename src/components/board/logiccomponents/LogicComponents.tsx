@@ -5,7 +5,7 @@ import Terminal from "../elements/Terminal";
 import { EntityType, Flow } from "../../../common/types";
 
 export default function LogicComponents() {
-  const [expanded, setExpanded] = useState<boolean>(false);
+  const [expanded, setExpanded] = useState<boolean>(true);
 
   return (
     <div className="absolute top-2 right-2 bottom-2 z-20">
