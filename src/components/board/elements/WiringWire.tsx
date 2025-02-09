@@ -13,6 +13,7 @@ type Props = {
 
 export default function WiringWire({ canvasRef, points, setPoints }: Props) {
   const canvasPos = useCanvasStore((state) => state.pos);
+  const zoom = useCanvasStore((state) => state.zoom);
 
   const [cursorPos, setCursorPos] = useState<Pos>(points[0]);
 
@@ -24,21 +25,19 @@ export default function WiringWire({ canvasRef, points, setPoints }: Props) {
 
     const canvasRect = canvas.getBoundingClientRect();
 
+    const posFromMouse = (event: MouseEvent): Pos => {
+      return {
+        x: (event.clientX - canvasRect.left - canvasPos.x) / zoom,
+        y: (event.clientY - canvasRect.top - canvasPos.y) / zoom,
+      };
+    };
+
     const handleMouseMove = (event: MouseEvent) => {
-      setCursorPos({
-        x: event.clientX - canvasRect.left - canvasPos.x,
-        y: event.clientY - canvasRect.top - canvasPos.y,
-      });
+      setCursorPos(posFromMouse(event));
     };
 
     const handleClick = (event: MouseEvent) => {
-      setPoints([
-        ...points,
-        {
-          x: event.clientX - canvasRect.left - canvasPos.x,
-          y: event.clientY - canvasRect.top - canvasPos.y,
-        },
-      ]);
+      setPoints([...points, posFromMouse(event)]);
     };
 
     canvas.addEventListener("mousemove", handleMouseMove);
@@ -48,7 +47,7 @@ export default function WiringWire({ canvasRef, points, setPoints }: Props) {
       canvas.removeEventListener("mousemove", handleMouseMove);
       canvas.removeEventListener("click", handleClick);
     };
-  }, [setCursorPos, canvasRef, canvasPos, points, setPoints]);
+  }, [setCursorPos, canvasRef, canvasPos, points, setPoints, zoom]);
 
   return (
     <CanvasElement
