@@ -5,14 +5,16 @@ import { TerminalEntity } from "../../../entities/canvas/TerminalEntity";
 import { EntityType, Flow, Pos, ToolType } from "../../../common/types";
 import { isTerminal } from "../../../libs/logicUtil";
 import CanvasElements from "./CanvasElements";
+import { GateEntity } from "../../../entities/canvas/GateEntity";
+import { GateTypeEntity } from "../../../entities/other/GateTypeEntity";
 
 export default function Canvas() {
   const ref = useRef<SVGSVGElement>(null);
 
   const zoom = useCanvasStore((state) => state.zoom);
   const tool = useCanvasStore((state) => state.tool);
-  const pos = useCanvasStore((state) => state.pos);
-  const pendingEntity = useCanvasStore((state) => state.pendingEntity);
+  const canvasPos = useCanvasStore((state) => state.pos);
+  const componentDrag = useCanvasStore((state) => state.componentDrag);
 
   const zoomToPoint = useCanvasStore((state) => state.zoomToPoint);
   const updatePos = useCanvasStore((state) => state.updatePos);
@@ -41,25 +43,29 @@ export default function Canvas() {
     return () => {
       canvas.removeEventListener("wheel", handleWheel);
     };
-  }, [ref, pos, updatePos, zoomToPoint]);
+  }, [ref, canvasPos, updatePos, zoomToPoint]);
 
   const handleDrop = (event: DragEvent) => {
-    if (pendingEntity === null || !ref.current) {
+    if (componentDrag === null || !ref.current) {
       return;
     }
 
     const canvasRect = ref.current.getBoundingClientRect();
-    const dropOffset: Pos = JSON.parse(event.dataTransfer.getData("offset"));
+    const dropOffset: Pos = componentDrag.offset;
 
-    const dropX = (event.clientX - canvasRect.left - pos.x) / zoom - dropOffset.x;
-    const dropY = (event.clientY - canvasRect.top - pos.y) / zoom - dropOffset.y;
+    const pos: Pos = {
+      x: (event.clientX - canvasRect.left - canvasPos.x) / zoom - dropOffset.x,
+      y: (event.clientY - canvasRect.top - canvasPos.y) / zoom - dropOffset.y,
+    };
 
     let entity = null;
-    if (isTerminal(pendingEntity.type)) {
+    if (isTerminal(componentDrag.type)) {
       entity = new TerminalEntity(
-        { x: dropX, y: dropY },
-        pendingEntity.type === EntityType.InTerminal ? Flow.In : Flow.Out,
+        pos,
+        componentDrag.type === EntityType.InTerminal ? Flow.In : Flow.Out,
       );
+    } else if (componentDrag.type === EntityType.Gate) {
+      entity = new GateEntity(pos, componentDrag.metadata as GateTypeEntity);
     }
 
     if (!entity) {
@@ -86,8 +92,8 @@ export default function Canvas() {
     >
       <pattern
         id="background-dots"
-        x={pos.x}
-        y={pos.y}
+        x={canvasPos.x}
+        y={canvasPos.y}
         width={25 * zoom}
         height={25 * zoom}
         patternUnits="userSpaceOnUse"
@@ -104,7 +110,7 @@ export default function Canvas() {
         className="relative overflow-visible"
         width="100%"
         height="100%"
-        transform={`translate(${pos.x}, ${pos.y}) scale(${zoom})`}
+        transform={`translate(${canvasPos.x}, ${canvasPos.y}) scale(${zoom})`}
       >
         <CanvasElements canvasRef={ref} />
       </foreignObject>

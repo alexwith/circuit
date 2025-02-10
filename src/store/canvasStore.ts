@@ -1,10 +1,9 @@
 import { create } from "zustand";
-import { Pos, ToolType } from "../common/types";
+import { ComponentDrag, Pos, ToolType } from "../common/types";
 import { MAX_ZOOM, MIN_ZOOM } from "../common/constants";
 import { CanvasEntity } from "../entities/canvas/CanvasEntity";
-import { TemplateEntity } from "../entities/other/TemplateEntity";
-import { GateTypeEntity } from "../entities/canvas/GateTypeEntity";
-import { defaultCircuits } from "../common/defaultCircuits";
+import { GateTypeEntity } from "../entities/other/GateTypeEntity";
+import { basicLogicGates } from "../common/basicGates";
 
 type State = {
   pos: Pos;
@@ -12,7 +11,7 @@ type State = {
   tool: ToolType;
   entities: CanvasEntity[];
   gateTypes: GateTypeEntity[];
-  pendingEntity: TemplateEntity | null;
+  componentDrag: ComponentDrag | null;
 };
 
 type Actions = {
@@ -22,7 +21,7 @@ type Actions = {
   setTool: (tool: ToolType) => void;
   addEntity: (entity: CanvasEntity) => void;
   addGateType: (gateType: GateTypeEntity) => void;
-  setPendingEntity: (entity: TemplateEntity | null) => void;
+  setComponentDrag: (componentDrag: ComponentDrag | null) => void;
 };
 
 export const useCanvasStore = create<State & Actions>((set) => ({
@@ -30,8 +29,8 @@ export const useCanvasStore = create<State & Actions>((set) => ({
   zoom: 1,
   tool: ToolType.Move,
   entities: [],
-  gateTypes: defaultCircuits,
-  pendingEntity: null,
+  gateTypes: basicLogicGates,
+  componentDrag: null,
 
   updatePos: (modifier: (prev: Pos) => Pos) =>
     set((state) => ({
@@ -71,8 +70,8 @@ export const useCanvasStore = create<State & Actions>((set) => ({
     set((state) => {
       return { gateTypes: [...state.gateTypes, gateType] };
     }),
-  setPendingEntity: (entity: TemplateEntity | null) =>
+  setComponentDrag: (componentDrag: ComponentDrag | null) =>
     set(() => ({
-      pendingEntity: entity,
+      componentDrag,
     })),
 }));

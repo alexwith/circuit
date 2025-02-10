@@ -1,35 +1,38 @@
 import ReactDOM from "react-dom/client";
 import { DragEvent, useEffect, useState } from "react";
 import { useCanvasStore } from "../../../store/canvasStore";
-import { TemplateEntity } from "../../../entities/other/TemplateEntity";
-import { Pos } from "../../../common/types";
+import { EntityType, Pos } from "../../../common/types";
 
 type Props = {
+  type: EntityType;
   name: string;
   displayElement: JSX.Element;
-  template: TemplateEntity;
+  metadata?: unknown;
 };
 
-export default function DraggableLogic({ name, displayElement, template }: Props) {
-  const setPendingEntity = useCanvasStore((state) => state.setPendingEntity);
+export default function DraggableLogic({ type, metadata, name, displayElement }: Props) {
+  const setComponentDrag = useCanvasStore((state) => state.setComponentDrag);
 
   const [dragImage, setDragImage] = useState<HTMLDivElement | null>(null);
 
   const handleDragStart = (event: DragEvent) => {
-    setPendingEntity(template);
-
     if (!dragImage) {
       return;
     }
 
     const rect = dragImage.getBoundingClientRect();
     const offset: Pos = { x: rect.width / 2, y: rect.height / 2 };
-    event.dataTransfer.setData("offset", JSON.stringify(offset));
     event.dataTransfer.setDragImage(dragImage, offset.x, offset.y);
+
+    setComponentDrag({
+      type,
+      offset,
+      metadata,
+    });
   };
 
   const handleDragEnd = () => {
-    setPendingEntity(null);
+    setComponentDrag(null);
   };
 
   useEffect(() => {

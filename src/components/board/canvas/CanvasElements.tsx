@@ -10,6 +10,7 @@ import { WireEntity } from "../../../entities/canvas/WireEntity";
 import Wire from "../elements/Wire";
 import { Pos } from "../../../common/types";
 import Gate from "../elements/Gate";
+import { GateEntity } from "../../../entities/canvas/GateEntity";
 
 type Props = {
   canvasRef: RefObject<SVGSVGElement>;
@@ -27,6 +28,8 @@ export default function CanvasElements({ canvasRef }: Props) {
   const handlePinClick = (pin: PinEntity) => {
     if (isWiring) {
       setIsWiring(false);
+
+      wiringPoints.pop(); // pop last element of wiring points as this will just be the pin
       addEntity(new WireEntity(wiringStartPin!, pin, wiringPoints));
     } else {
       setWiringPoints([pin.getPos()]);
@@ -41,6 +44,10 @@ export default function CanvasElements({ canvasRef }: Props) {
         const terminal = entity as TerminalEntity;
         return <Terminal entity={terminal} flow={terminal.flow} onPinClick={handlePinClick} />;
       }
+      case entity instanceof GateEntity: {
+        const gate = entity as GateEntity;
+        return <Gate entity={gate} gateType={gate.type} onPinClick={handlePinClick} />;
+      }
       case entity instanceof WireEntity: {
         const wire = entity as WireEntity;
         return (
@@ -54,7 +61,6 @@ export default function CanvasElements({ canvasRef }: Props) {
 
   return (
     <>
-      <CanvasElement pos={{ x: 100, y: 100 }} zIndex={0} element={<Gate />} />
       {entities.map((entity, key) => {
         const element = createElement(entity);
         return (

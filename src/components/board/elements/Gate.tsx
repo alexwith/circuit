@@ -1,15 +1,69 @@
-export default function Gate() {
+import { ReactNode } from "react";
+import { GATE_PIN_OFFSET } from "../../../common/canvasConfig";
+import { Flow } from "../../../common/types";
+import { GateEntity } from "../../../entities/canvas/GateEntity";
+import { PinEntity } from "../../../entities/canvas/PinEntity";
+import { GateTypeEntity } from "../../../entities/other/GateTypeEntity";
+import Pin from "./Pin";
+
+type Props = {
+  gateType: GateTypeEntity;
+  entity?: GateEntity;
+  onPinClick?: (pin: PinEntity) => void;
+};
+
+export default function Gate({ gateType, entity, onPinClick }: Props) {
+  const handlePinClick = (flow: Flow, yPos: number) => {
+    if (!entity || !onPinClick) {
+      return;
+    }
+
+    const pin = (flow === Flow.In ? entity.inputs : entity.outputs)[yPos];
+    onPinClick(pin);
+  };
+
   return (
-    <svg className="w-25 h-15">
-      <path
-        className="stroke-violet-500 stroke-[5] fill-none"
-        d="M 80 30 L 100 30 M 0 18 L 20 18 M 0 42 L 20 42"
-        strokeWidth={5}
-      />
-      <path
-        className="fill-violet-500"
-        d="M 20 0 L 50 0 C 66 0 80 13 80 30 C 80 46 66 60 50 60 L 20 60 Z"
-      />
-    </svg>
+    <div className="relative">
+      <svg
+        className="overflow-visible"
+        style={{
+          width: `${gateType.width}px`,
+          height: `${gateType.height}px`,
+        }}
+      >
+        {gateType.icon}
+        <text
+          className="fill-indigo-950 select-none"
+          x={gateType.width / 2}
+          y={gateType.height / 2}
+          dominantBaseline="middle"
+          textAnchor="middle"
+          fontWeight={"bold"}
+          fontSize={18}
+          fontFamily={"Inter"}
+        >
+          {gateType.name}
+        </text>
+      </svg>
+      {createPins(gateType, Flow.In, handlePinClick)}
+      {createPins(gateType, Flow.Out, handlePinClick)}
+    </div>
   );
+}
+
+function createPins(
+  gateType: GateTypeEntity,
+  flow: Flow,
+  handlePinClick: (flow: Flow, yPos: number) => void,
+): ReactNode {
+  const amount = flow === Flow.In ? gateType.inputs : gateType.outputs;
+  return [...Array(amount).keys()].map((yPos, key) => {
+    return (
+      <Pin
+        key={key}
+        offset={GATE_PIN_OFFSET(gateType, flow, yPos)}
+        onClick={() => handlePinClick(flow, yPos)}
+      />
+    );
+  });
 }

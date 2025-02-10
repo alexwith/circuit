@@ -3,6 +3,12 @@ export type Pos = {
   y: number;
 };
 
+export type ComponentDrag = {
+  type: EntityType;
+  offset: Pos;
+  metadata: unknown;
+};
+
 export enum ToolType {
   Move,
   Interact,
@@ -16,4 +22,5 @@ export enum Flow {
 export enum EntityType {
   OutTerminal,
   InTerminal,
+  Gate,
 }

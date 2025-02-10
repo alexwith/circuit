@@ -32,14 +32,14 @@ export default function LogicComponents() {
             <h1 className="select-none text-violet-400 font-medium">Terminals</h1>
             <div className="relative flex flex-col gap-1">
               <DraggableLogic
+                type={EntityType.InTerminal}
                 name="In Terminal"
                 displayElement={<Terminal flow={Flow.In} />}
-                template={{ type: EntityType.InTerminal }}
               />
               <DraggableLogic
+                type={EntityType.OutTerminal}
                 name="Out Terminal"
                 displayElement={<Terminal flow={Flow.Out} />}
-                template={{ type: EntityType.OutTerminal }}
               />
             </div>
           </div>
@@ -50,9 +50,10 @@ export default function LogicComponents() {
                 return (
                   <DraggableLogic
                     key={key}
+                    type={EntityType.Gate}
                     name={gateType.name}
-                    displayElement={<Gate />}
-                    template={{ type: EntityType.InTerminal }}
+                    displayElement={<Gate gateType={gateType} />}
+                    metadata={gateType}
                   />
                 );
               })}
