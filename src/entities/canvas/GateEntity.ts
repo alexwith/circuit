@@ -26,6 +26,36 @@ export class GateEntity extends CanvasEntity {
     return 0;
   }
 
+  execute() {
+    let inputValues = "";
+    for (const pin of this.inputs) {
+      inputValues += pin.active ? "1" : "0";
+    }
+
+    let outputValues: boolean[] = [];
+    for (const inputValuation in this.type.truthTable) {
+      if (inputValuation !== inputValues) {
+        continue;
+      }
+
+      const outputValuation = this.type.truthTable[inputValuation];
+      for (let i = 0; i < outputValuation.length; i++) {
+        const active = outputValuation.charAt(i) === "1";
+        outputValues.push(active);
+      }
+      break;
+    }
+
+    if (outputValues.length === 0) {
+      outputValues = Array(this.type.outputs).fill(false, 0, this.type.outputs);
+    }
+
+    for (let i = 0; i < outputValues.length; i++) {
+      const outputPin = this.outputs[i];
+      outputPin.active = outputValues[i];
+    }
+  }
+
   private createPins(flow: Flow): PinEntity[] {
     const pins: PinEntity[] = [];
     const amount = flow === Flow.In ? this.type.inputs : this.type.outputs;

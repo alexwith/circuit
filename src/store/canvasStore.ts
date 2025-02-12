@@ -4,6 +4,10 @@ import { MAX_ZOOM, MIN_ZOOM } from "../common/constants";
 import { CanvasEntity } from "../entities/canvas/CanvasEntity";
 import { GateTypeEntity } from "../entities/other/GateTypeEntity";
 import { basicLogicGates } from "../common/basicGates";
+import { executeCircuit } from "../libs/circuit";
+import { TerminalEntity } from "../entities/canvas/TerminalEntity";
+import { WireEntity } from "../entities/canvas/WireEntity";
+import { GateEntity } from "../entities/canvas/GateEntity";
 
 type State = {
   pos: Pos;
@@ -22,6 +26,7 @@ type Actions = {
   addEntity: (entity: CanvasEntity) => void;
   addGateType: (gateType: GateTypeEntity) => void;
   setComponentDrag: (componentDrag: ComponentDrag | null) => void;
+  simulate: () => void;
 };
 
 export const useCanvasStore = create<State & Actions>((set) => ({
@@ -74,4 +79,17 @@ export const useCanvasStore = create<State & Actions>((set) => ({
     set(() => ({
       componentDrag,
     })),
+  simulate: () => {
+    set((state) => {
+      executeCircuit(state.entities);
+
+      // trigger a canvas refresh
+      state.pos = {
+        x: state.pos.x,
+        y: state.pos.y,
+      };
+
+      return {};
+    });
+  },
 }));

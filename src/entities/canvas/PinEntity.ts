@@ -8,11 +8,13 @@ export class PinEntity {
   parent: CanvasEntity;
   flow: Flow;
   yPos: number; // index representing where it is on the y-axis, i.g. 0, 1, 2, 3...
+  active: boolean;
 
   constructor(parent: CanvasEntity, flow: Flow, yPos: number = 0) {
     this.parent = parent;
     this.flow = flow;
     this.yPos = yPos;
+    this.active = false;
   }
 
   getPos(): Pos {
