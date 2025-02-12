@@ -12,6 +12,7 @@ export const GATE_PIN_OFFSET = (gateType: GateTypeEntity, flow: Flow, yPos: numb
   const amount = flow === Flow.In ? gateType.inputs : gateType.outputs;
   const spacing = gateType.height / amount;
   const offsetY = spacing / 2 + spacing * yPos - PIN_SIZE / 2;
-  const offsetX = (flow === Flow.In ? 0 : gateType.width) - PIN_SIZE / 2;
+  const offsetX =
+    (flow === Flow.In ? 0 : gateType.width) - PIN_SIZE / 2 + 5 * (flow === Flow.In ? -1 : 1);
   return { x: offsetX, y: offsetY };
 };
