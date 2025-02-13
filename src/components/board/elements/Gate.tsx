@@ -34,8 +34,8 @@ export default function Gate({ gateType, entity, onPinClick }: Props) {
         {gateType.icon}
         <text
           className="fill-indigo-950 select-none"
-          x={gateType.width / 2}
-          y={gateType.height / 2}
+          x={gateType.width / 2 + gateType.nameOffset.x}
+          y={gateType.height / 2 + gateType.nameOffset.y}
           dominantBaseline="middle"
           textAnchor="middle"
           fontWeight={"bold"}
