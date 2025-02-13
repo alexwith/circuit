@@ -20,6 +20,7 @@ export default function CanvasElements({ canvasRef }: Props) {
   const entities = useCanvasStore((state) => state.entities);
 
   const addEntity = useCanvasStore((state) => state.addEntity);
+  const simulate = useCanvasStore((state) => state.simulate);
 
   const [isWiring, setIsWiring] = useState<boolean>(false);
   const [wiringStartPin, setWiringStartPin] = useState<PinEntity | null>(null);
@@ -31,6 +32,7 @@ export default function CanvasElements({ canvasRef }: Props) {
 
       wiringPoints.pop(); // pop last element of wiring points as this will just be the pin
       addEntity(new WireEntity(wiringStartPin!, pin, wiringPoints));
+      simulate();
     } else {
       setWiringPoints([pin.getPos()]);
       setWiringStartPin(pin);
