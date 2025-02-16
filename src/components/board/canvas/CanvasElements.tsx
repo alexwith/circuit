@@ -2,7 +2,7 @@ import { useCanvasStore } from "../../../store/canvasStore";
 import WiringWire from "../elements/WiringWire";
 import Terminal from "../elements/Terminal";
 import CanvasElement from "./CanvasElement";
-import { ReactNode, RefObject, useEffect, useState } from "react";
+import { ReactNode, RefObject, useCallback, useEffect, useState } from "react";
 import { CanvasEntity } from "../../../entities/canvas/CanvasEntity";
 import { TerminalEntity } from "../../../entities/canvas/TerminalEntity";
 import { PinEntity } from "../../../entities/canvas/PinEntity";
@@ -64,19 +64,22 @@ export default function CanvasElements({ canvasRef }: Props) {
     };
   }, [draggingEntity, zoom, updatePos]);
 
-  const handlePinClick = (pin: PinEntity) => {
-    if (isWiring) {
-      setIsWiring(false);
+  const handlePinClick = useCallback(
+    (pin: PinEntity) => {
+      if (isWiring) {
+        setIsWiring(false);
 
-      wiringPoints.pop(); // pop last element of wiring points as this will just be the pin
-      addEntity(new WireEntity(wiringStartPin!, pin, wiringPoints));
-      simulate();
-    } else {
-      setWiringPoints([]);
-      setWiringStartPin(pin);
-      setIsWiring(true);
-    }
-  };
+        wiringPoints.pop(); // pop last element of wiring points as this will just be the pin
+        addEntity(new WireEntity(wiringStartPin!, pin, wiringPoints));
+        simulate();
+      } else {
+        setWiringPoints([]);
+        setWiringStartPin(pin);
+        setIsWiring(true);
+      }
+    },
+    [isWiring, wiringStartPin, wiringPoints, addEntity, simulate],
+  );
 
   const handleEntityStartDrag = (entity: CanvasEntity) => {
     // Do not allow dragging of wires
