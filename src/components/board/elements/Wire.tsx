@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Pos } from "../../../common/types";
 import { roundCommands, SVGCommand } from "svg-round-corners";
 import { WireEntity } from "../../../entities/canvas/WireEntity";
@@ -9,9 +9,7 @@ type Props = {
 };
 
 export default function Wire({ entity, points }: Props) {
-  const [path, setPath] = useState<string>("");
-
-  useEffect(() => {
+  const path = useMemo(() => {
     const pathCommands: SVGCommand[] = [];
 
     const startPoint = points[0];
@@ -29,7 +27,7 @@ export default function Wire({ entity, points }: Props) {
       pathCommands.push({ marker: "L", values: offsetPoint });
     });
 
-    setPath(roundCommands(pathCommands, 7).path);
+    return roundCommands(pathCommands, 7).path;
   }, [points]);
 
   return (
