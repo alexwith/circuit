@@ -2,7 +2,7 @@ import { useCanvasStore } from "../../../store/canvasStore";
 import WiringWire from "../elements/WiringWire";
 import Terminal from "../elements/Terminal";
 import CanvasElement from "./CanvasElement";
-import { ReactNode, RefObject, useState } from "react";
+import { ReactNode, RefObject, useEffect, useState } from "react";
 import { CanvasEntity } from "../../../entities/canvas/CanvasEntity";
 import { TerminalEntity } from "../../../entities/canvas/TerminalEntity";
 import { PinEntity } from "../../../entities/canvas/PinEntity";
@@ -18,13 +18,51 @@ type Props = {
 
 export default function CanvasElements({ canvasRef }: Props) {
   const entities = useCanvasStore((state) => state.entities);
+  const zoom = useCanvasStore((state) => state.zoom);
 
   const addEntity = useCanvasStore((state) => state.addEntity);
   const simulate = useCanvasStore((state) => state.simulate);
+  const updatePos = useCanvasStore((state) => state.updatePos);
 
   const [isWiring, setIsWiring] = useState<boolean>(false);
   const [wiringStartPin, setWiringStartPin] = useState<PinEntity | null>(null);
   const [wiringPoints, setWiringPoints] = useState<Pos[]>([{ x: 0, y: 0 }]);
+
+  const [draggingEntity, setDraggingEntity] = useState<CanvasEntity | null>(null);
+
+  useEffect(() => {
+    if (!draggingEntity) {
+      return;
+    }
+
+    const handleMouseUp = () => {
+      setDraggingEntity(null);
+    };
+
+    let currentPos = draggingEntity.getPos();
+    const handleMouseMove = (event: MouseEvent) => {
+      const newPos = {
+        x: currentPos.x + event.movementX / zoom,
+        y: currentPos.y + event.movementY / zoom,
+      };
+      currentPos = newPos;
+
+      draggingEntity!.updatePos(() => ({
+        x: newPos.x,
+        y: newPos.y,
+      }));
+      // trigger a rerender of the canvas
+      updatePos((prev) => ({ x: prev.x, y: prev.y }));
+    };
+
+    document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [draggingEntity, zoom, updatePos]);
 
   const handlePinClick = (pin: PinEntity) => {
     if (isWiring) {
@@ -40,7 +78,16 @@ export default function CanvasElements({ canvasRef }: Props) {
     }
   };
 
-  function createElement(entity: CanvasEntity): ReactNode {
+  const handleEntityStartDrag = (entity: CanvasEntity) => {
+    // Do not allow dragging of wires
+    if (entity instanceof WireEntity) {
+      return;
+    }
+
+    setDraggingEntity(entity);
+  };
+
+  const createElement = (entity: CanvasEntity): ReactNode => {
     switch (true) {
       case entity instanceof TerminalEntity: {
         const terminal = entity as TerminalEntity;
@@ -59,7 +106,7 @@ export default function CanvasElements({ canvasRef }: Props) {
       default:
         return null;
     }
-  }
+  };
 
   return (
     <>
@@ -72,6 +119,7 @@ export default function CanvasElements({ canvasRef }: Props) {
               pos={entity.getPos()}
               zIndex={entity.getZIndex()}
               element={element}
+              onMouseDown={() => handleEntityStartDrag(entity)}
             />
           )
         );

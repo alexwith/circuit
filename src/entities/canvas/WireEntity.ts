@@ -20,6 +20,8 @@ export class WireEntity extends CanvasEntity {
     return this.pin0.getPos();
   }
 
+  updatePos(): void {}
+
   getZIndex(): number {
     return -10;
   }

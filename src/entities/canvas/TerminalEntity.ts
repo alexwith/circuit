@@ -19,6 +19,10 @@ export class TerminalEntity extends CanvasEntity {
     return this.pos;
   }
 
+  updatePos(modifier: (prev: Pos) => Pos): void {
+    this.pos = modifier(this.pos);
+  }
+
   getZIndex(): number {
     return 0;
   }
