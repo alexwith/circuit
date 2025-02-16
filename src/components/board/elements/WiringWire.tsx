@@ -11,11 +11,11 @@ type Props = {
   setPoints: (points: Pos[]) => void;
 };
 
-export default function WiringWire({ canvasRef, points, setPoints }: Props) {
+export default function WiringWire({ canvasRef, startPos, points, setPoints }: Props) {
   const canvasPos = useCanvasStore((state) => state.pos);
   const zoom = useCanvasStore((state) => state.zoom);
 
-  const [cursorPos, setCursorPos] = useState<Pos>(points[0]);
+  const [cursorPos, setCursorPos] = useState<Pos>(startPos);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -51,9 +51,9 @@ export default function WiringWire({ canvasRef, points, setPoints }: Props) {
 
   return (
     <CanvasElement
-      pos={points[0]}
+      pos={startPos}
       zIndex={-10}
-      element={<Wire points={[...points, cursorPos]} />}
+      element={<Wire points={[startPos, ...points, cursorPos]} />}
     />
   );
 }

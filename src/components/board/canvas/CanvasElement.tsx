@@ -5,7 +5,7 @@ type Props = {
   pos: Pos;
   zIndex: number;
   element: ReactNode;
-  onMouseDown: () => void;
+  onMouseDown?: () => void;
 };
 
 export default function CanvasElement({ pos, zIndex, element, onMouseDown }: Props) {

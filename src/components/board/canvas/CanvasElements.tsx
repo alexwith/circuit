@@ -72,7 +72,7 @@ export default function CanvasElements({ canvasRef }: Props) {
       addEntity(new WireEntity(wiringStartPin!, pin, wiringPoints));
       simulate();
     } else {
-      setWiringPoints([pin.getPos()]);
+      setWiringPoints([]);
       setWiringStartPin(pin);
       setIsWiring(true);
     }
