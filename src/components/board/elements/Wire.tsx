@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Pos } from "../../../common/types";
 import { roundCommands, SVGCommand } from "svg-round-corners";
 import { WireEntity } from "../../../entities/canvas/WireEntity";

@@ -23,7 +23,7 @@ export class WireEntity extends CanvasEntity {
   updatePos(): void {}
 
   getZIndex(): number {
-    return -10;
+    return this.isActive() ? -10 : -20;
   }
 
   isActive(): boolean {
