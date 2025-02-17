@@ -4,27 +4,30 @@ import { Pos } from "../common/types";
 type Props = {
   ref: RefObject<Element | null>;
   updatePos: (modifier: (prev: Pos) => Pos) => void;
-  enabled: boolean;
+  targetPredicate: (target: EventTarget | null) => boolean;
 };
 
 type Result = {
   dragging: boolean;
 };
 
-export function usePersistentDrag({ ref, updatePos, enabled }: Props): Result {
+export function usePersistentDrag({ ref, updatePos, targetPredicate }: Props): Result {
   const [dragging, setDragging] = useState<boolean>(false);
 
-  const handlePointerDown = useCallback(() => {
-    if (!enabled) {
-      return;
-    }
+  const handlePointerDown = useCallback(
+    (event: PointerEvent) => {
+      if (!targetPredicate(event.target)) {
+        return;
+      }
 
-    setDragging(true);
-  }, [enabled]);
+      setDragging(true);
+    },
+    [targetPredicate],
+  );
 
   const handlePointerMove = useCallback(
     (event: Event) => {
-      if (!dragging || !enabled) {
+      if (!dragging) {
         return;
       }
 
@@ -34,16 +37,12 @@ export function usePersistentDrag({ ref, updatePos, enabled }: Props): Result {
         y: prev.y + pointerEvent.movementY,
       }));
     },
-    [dragging, updatePos, enabled],
+    [dragging, updatePos],
   );
 
   const handlePointerUp = useCallback(() => {
-    if (!enabled) {
-      return;
-    }
-
     setDragging(false);
-  }, [enabled]);
+  }, []);
 
   useEffect(() => {
     const element = ref.current;

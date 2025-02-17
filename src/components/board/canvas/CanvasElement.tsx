@@ -14,7 +14,7 @@ export default function CanvasElement({ pos, zIndex, element, onMouseDown }: Pro
   return (
     <div
       ref={ref}
-      className="absolute"
+      className="absolute cursor-auto"
       onMouseDown={onMouseDown}
       style={{
         zIndex,

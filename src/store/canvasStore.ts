@@ -1,18 +1,14 @@
 import { create } from "zustand";
-import { ComponentDrag, Pos, ToolType } from "../common/types";
+import { ComponentDrag, Pos } from "../common/types";
 import { MAX_ZOOM, MIN_ZOOM } from "../common/constants";
 import { CanvasEntity } from "../entities/canvas/CanvasEntity";
 import { GateTypeEntity } from "../entities/other/GateTypeEntity";
 import { basicLogicGates } from "../common/basicGates";
 import { executeCircuit } from "../libs/circuit";
-import { TerminalEntity } from "../entities/canvas/TerminalEntity";
-import { WireEntity } from "../entities/canvas/WireEntity";
-import { GateEntity } from "../entities/canvas/GateEntity";
 
 type State = {
   pos: Pos;
   zoom: number;
-  tool: ToolType;
   entities: CanvasEntity[];
   gateTypes: GateTypeEntity[];
   componentDrag: ComponentDrag | null;
@@ -22,7 +18,6 @@ type Actions = {
   updatePos: (modifier: (prev: Pos) => Pos) => void;
   updateZoom: (modifier: (prev: number) => number) => void;
   zoomToPoint: (target: Pos, zoom: number) => void;
-  setTool: (tool: ToolType) => void;
   addEntity: (entity: CanvasEntity) => void;
   addGateType: (gateType: GateTypeEntity) => void;
   setComponentDrag: (componentDrag: ComponentDrag | null) => void;
@@ -32,7 +27,6 @@ type Actions = {
 export const useCanvasStore = create<State & Actions>((set) => ({
   pos: { x: 0, y: 0 },
   zoom: 1,
-  tool: ToolType.Move,
   entities: [],
   gateTypes: basicLogicGates,
   componentDrag: null,
@@ -64,7 +58,6 @@ export const useCanvasStore = create<State & Actions>((set) => ({
         pos: { x, y },
       };
     }),
-  setTool: (tool: ToolType) => set(() => ({ tool })),
   addEntity: (entity: CanvasEntity) =>
     set((state) => {
       return {

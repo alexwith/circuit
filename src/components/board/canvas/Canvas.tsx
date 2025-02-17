@@ -2,7 +2,7 @@ import { DragEvent, useEffect, useRef } from "react";
 import { usePersistentDrag } from "../../../hooks/usePersistentDrag";
 import { useCanvasStore } from "../../../store/canvasStore";
 import { TerminalEntity } from "../../../entities/canvas/TerminalEntity";
-import { EntityType, Flow, Pos, ToolType } from "../../../common/types";
+import { EntityType, Flow, Pos } from "../../../common/types";
 import { isTerminal } from "../../../libs/logicUtil";
 import CanvasElements from "./CanvasElements";
 import { GateEntity } from "../../../entities/canvas/GateEntity";
@@ -10,9 +10,10 @@ import { GateTypeEntity } from "../../../entities/other/GateTypeEntity";
 
 export default function Canvas() {
   const ref = useRef<SVGSVGElement>(null);
+  const draggableRef = useRef<SVGRectElement>(null);
+  const elementsRef = useRef<SVGSVGElement>(null);
 
   const zoom = useCanvasStore((state) => state.zoom);
-  const tool = useCanvasStore((state) => state.tool);
   const canvasPos = useCanvasStore((state) => state.pos);
   const componentDrag = useCanvasStore((state) => state.componentDrag);
 
@@ -20,7 +21,15 @@ export default function Canvas() {
   const updatePos = useCanvasStore((state) => state.updatePos);
   const addEntity = useCanvasStore((state) => state.addEntity);
 
-  const { dragging } = usePersistentDrag({ ref, updatePos, enabled: tool === ToolType.Move });
+  const { dragging } = usePersistentDrag({
+    ref,
+    updatePos,
+    targetPredicate: (target) => {
+      console.log(target);
+      console.log(draggableRef.current);
+      return target === draggableRef.current || target === elementsRef.current;
+    },
+  });
 
   useEffect(() => {
     const canvas = ref?.current;
@@ -84,9 +93,6 @@ export default function Canvas() {
     <svg
       ref={ref}
       className="absolute w-full h-full top-0 left-0"
-      style={{
-        cursor: tool === ToolType.Interact ? "default" : dragging ? "grabbing" : "grab",
-      }}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
@@ -106,11 +112,22 @@ export default function Canvas() {
         />
       </pattern>
       <rect x="0" y="0" width="100%" height="100%" fill="url(#background-dots)" />
+      <rect
+        ref={draggableRef}
+        x="0"
+        y="0"
+        width="100%"
+        height="100%"
+        fill="transparent"
+        cursor={dragging ? "grabbing" : "grab"}
+      />
       <foreignObject
+        ref={elementsRef}
         className="relative overflow-visible"
         width="100%"
         height="100%"
         transform={`translate(${canvasPos.x}, ${canvasPos.y}) scale(${zoom})`}
+        cursor={dragging ? "grabbing" : "grab"}
       >
         <CanvasElements canvasRef={ref} />
       </foreignObject>

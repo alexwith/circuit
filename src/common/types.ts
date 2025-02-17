@@ -9,11 +9,6 @@ export type ComponentDrag = {
   metadata: unknown;
 };
 
-export enum ToolType {
-  Move,
-  Interact,
-}
-
 export enum Flow {
   In,
   Out,
