@@ -25,8 +25,6 @@ export default function Canvas() {
     ref,
     updatePos,
     targetPredicate: (target) => {
-      console.log(target);
-      console.log(draggableRef.current);
       return target === draggableRef.current || target === elementsRef.current;
     },
   });
