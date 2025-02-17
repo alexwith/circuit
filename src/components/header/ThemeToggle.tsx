@@ -21,7 +21,7 @@ export default function ThemeToggle() {
 
   return (
     <div
-      className="flex items-center gap-2 p-2 text-darkest-light text-sm rounded-md hover:cursor-pointer hover:text-violet-500 hover:dark:bg-light-dark hover:bg-light"
+      className="flex items-center gap-2 p-2 text-darkest dark:text-lightest text-sm rounded-md hover:cursor-pointer hover:text-violet-400 hover:dark:bg-light-dark hover:bg-light"
       onClick={handleThemeToggle}
     >
       {darkTheme ? (
