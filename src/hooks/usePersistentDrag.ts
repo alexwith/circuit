@@ -14,7 +14,7 @@ type Result = {
 export function usePersistentDrag({ ref, updatePos, targetPredicate }: Props): Result {
   const [dragging, setDragging] = useState<boolean>(false);
 
-  const handlePointerDown = useCallback(
+  const handleMouseDown = useCallback(
     (event: PointerEvent) => {
       if (!targetPredicate(event.target)) {
         return;
@@ -50,16 +50,16 @@ export function usePersistentDrag({ ref, updatePos, targetPredicate }: Props): R
       return;
     }
 
-    element.addEventListener("pointerdown", handlePointerDown);
+    element.addEventListener("pointerdown", handleMouseDown as EventListener);
     element.addEventListener("pointermove", handlePointerMove);
     element.addEventListener("pointerup", handlePointerUp);
 
     return () => {
-      element.removeEventListener("pointerdown", handlePointerDown);
+      element.removeEventListener("pointerdown", handleMouseDown as EventListener);
       element.removeEventListener("pointermove", handlePointerMove);
       element.removeEventListener("pointerup", handlePointerUp);
     };
-  }, [ref, handlePointerDown, handlePointerMove, handlePointerUp]);
+  }, [ref, handleMouseDown, handlePointerMove, handlePointerUp]);
 
   return {
     dragging,
