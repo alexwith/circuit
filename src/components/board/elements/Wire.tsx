@@ -27,7 +27,7 @@ export default function Wire({ entity, points }: Props) {
       pathCommands.push({ marker: "L", values: offsetPoint });
     });
 
-    return roundCommands(pathCommands, 7).path;
+    return roundCommands(pathCommands, 10).path;
   }, [points]);
 
   return (
