@@ -52,7 +52,7 @@ export default function DraggableLogic({ type, metadata, name, displayElement }:
 
   return (
     <div
-      className="bg-light dark:bg-light-dark px-2 py-1 rounded-sm border-1 border-transparent hover:border-1 hover:border-violet-400 hover:cursor-grab"
+      className="bg-light dark:bg-light-dark px-2 py-[0.15rem] rounded-sm border-1 border-transparent hover:border-1 hover:border-violet-400 hover:cursor-grab"
       draggable
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}

@@ -12,24 +12,24 @@ export default function LogicComponents() {
   const [expanded, setExpanded] = useState<boolean>(true);
 
   return (
-    <div className="absolute top-12 right-2 bottom-2 z-20">
+    <div className="absolute top-11 right-2 bottom-2 z-20">
       <div
-        className="flex flex-col w-50 gap-1 bg-lightest dark:bg-dark border-1 border-dark-light dark:border-light-dark rounded-sm duration-200 ease overflow-hidden"
+        className={`flex flex-col w-50 gap-1 bg-lightest dark:bg-dark border-1 border-dark-light dark:border-light-dark rounded-sm duration-100 ease overflow-hidden ${!expanded && "hover:border-violet-400"}`}
         style={{
-          height: expanded ? "100%" : "35px",
+          height: expanded ? "100%" : "30px",
         }}
       >
         <div
           className="flex justify-between items-center px-3 py-1 text-dark dark:text-light hover:cursor-pointer"
           onClick={() => setExpanded(!expanded)}
         >
-          <h1 className="font-medium select-none">Components</h1>
-          {expanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
+          <h1 className="font-medium text-sm select-none">Components</h1>
+          {expanded ? <ChevronUpIcon size={14} /> : <ChevronDownIcon size={14} />}
         </div>
         <div className="w-full h-0.25 bg-dark-light dark:bg-light-dark" />
         <div className="flex flex-col gap-4 px-3 py-1">
           <div>
-            <h1 className="select-none text-violet-400 font-medium">Terminals</h1>
+            <h1 className="text-sm select-none text-violet-400 font-medium">Terminals</h1>
             <div className="relative flex flex-col gap-1">
               <DraggableLogic
                 type={EntityType.InTerminal}
@@ -44,7 +44,7 @@ export default function LogicComponents() {
             </div>
           </div>
           <div>
-            <h1 className="select-none text-violet-400 font-medium">Circuits</h1>
+            <h1 className="text-sm select-none text-violet-400 font-medium">Circuits</h1>
             <div className="relative flex flex-col gap-1">
               {gateTypes.map((gateType, key) => {
                 return (
