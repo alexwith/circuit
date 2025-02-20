@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom/client";
 import { DragEvent, useEffect, useState } from "react";
-import { useCanvasStore } from "../../../store/canvasStore";
-import { EntityType, Pos } from "../../../common/types";
+import { useCanvasStore } from "../../../../store/canvasStore";
+import { EntityType, Pos } from "../../../../common/types";
 
 type Props = {
   type: EntityType;

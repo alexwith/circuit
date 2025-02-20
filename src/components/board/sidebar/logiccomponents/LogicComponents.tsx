@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { ChevronDownIcon, ChevronUpIcon } from "../../../common/icons";
+import { ChevronDownIcon, ChevronUpIcon } from "../../../../common/icons";
 import DraggableLogic from "./DraggableLogic";
-import Terminal from "../elements/Terminal";
-import { EntityType, Flow } from "../../../common/types";
-import { useCanvasStore } from "../../../store/canvasStore";
-import Gate from "../elements/Gate";
+import Terminal from "../../elements/Terminal";
+import { EntityType, Flow } from "../../../../common/types";
+import { useCanvasStore } from "../../../../store/canvasStore";
+import Gate from "../../elements/Gate";
 
 export default function LogicComponents() {
   const gateTypes = useCanvasStore((state) => state.gateTypes);
