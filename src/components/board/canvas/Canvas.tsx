@@ -20,6 +20,7 @@ export default function Canvas() {
   const zoomToPoint = useCanvasStore((state) => state.zoomToPoint);
   const updatePos = useCanvasStore((state) => state.updatePos);
   const addEntity = useCanvasStore((state) => state.addEntity);
+  const computeTruthTable = useCanvasStore((state) => state.computeTruthTable);
 
   const { dragging } = usePersistentDrag({
     ref,
@@ -80,6 +81,7 @@ export default function Canvas() {
     }
 
     addEntity(entity);
+    computeTruthTable();
   };
 
   const handleDragOver = (event: DragEvent) => {

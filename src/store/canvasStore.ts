@@ -5,12 +5,15 @@ import { CanvasEntity } from "../entities/canvas/CanvasEntity";
 import { GateTypeEntity } from "../entities/other/GateTypeEntity";
 import { basicLogicGates } from "../common/basicGates";
 import { executeCircuit } from "../libs/circuit";
+import { groupByEntityType } from "../libs/entityUtil";
+import { computeTruthTable } from "../libs/truthTable";
 
 type State = {
   pos: Pos;
   zoom: number;
   entities: CanvasEntity[];
   gateTypes: GateTypeEntity[];
+  truthTable: boolean[][];
   componentDrag: ComponentDrag | null;
 };
 
@@ -21,6 +24,7 @@ type Actions = {
   addEntity: (entity: CanvasEntity) => void;
   addGateType: (gateType: GateTypeEntity) => void;
   setComponentDrag: (componentDrag: ComponentDrag | null) => void;
+  computeTruthTable: () => void;
   simulate: () => void;
 };
 
@@ -29,6 +33,7 @@ export const useCanvasStore = create<State & Actions>((set) => ({
   zoom: 1,
   entities: [],
   gateTypes: basicLogicGates,
+  truthTable: [],
   componentDrag: null,
 
   updatePos: (modifier: (prev: Pos) => Pos) =>
@@ -72,9 +77,18 @@ export const useCanvasStore = create<State & Actions>((set) => ({
     set(() => ({
       componentDrag,
     })),
+  computeTruthTable: () => {
+    set((state) => ({
+      truthTable: groupByEntityType(state.entities, (terminals, wires, gates) => {
+        return computeTruthTable(terminals, wires, gates);
+      }),
+    }));
+  },
   simulate: () => {
     set((state) => {
-      executeCircuit(state.entities);
+      groupByEntityType(state.entities, (terminals, wires, gates) => {
+        executeCircuit(terminals, wires, gates);
+      });
 
       // trigger a canvas refresh
       state.pos = {

@@ -4,6 +4,7 @@ import Control from "./control/Control";
 import { useCanvasStore } from "../../store/canvasStore";
 import { AUTO_CENTER_STEPS } from "../../common/constants";
 import LogicComponents from "./logiccomponents/LogicComponents";
+import TruthTable from "./TruthTable";
 
 export default function Board() {
   const boardRef = useRef<HTMLDivElement>(null);
@@ -50,12 +51,15 @@ export default function Board() {
         }}
         onCenter={handleCenterCanvas}
       />
-      <div className="absolute w-50 top-2 right-2 bg-lightest dark:bg-dark border-1 border-dark-light dark:border-light-dark rounded-sm hover:border-violet-400 hover:cursor-pointer">
-        <div className="flex items-center gap-1 px-3 py-1">
-          <h1 className="font-medium text-sm text-dark dark:text-light">Create Circuit</h1>
+      <div className="absolute flex flex-col gap-2 right-2 top-2 bottom-2">
+        <div className="w-50 bg-lightest dark:bg-dark border-1 border-dark-light dark:border-light-dark rounded-sm hover:border-violet-400 hover:cursor-pointer">
+          <div className="flex items-center gap-1 px-3 py-1">
+            <h1 className="font-medium text-sm text-dark dark:text-light">Create Circuit</h1>
+          </div>
         </div>
+        <TruthTable />
+        <LogicComponents />
       </div>
-      <LogicComponents />
     </div>
   );
 }

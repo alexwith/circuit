@@ -23,6 +23,7 @@ export default function CanvasElements({ canvasRef }: Props) {
   const addEntity = useCanvasStore((state) => state.addEntity);
   const simulate = useCanvasStore((state) => state.simulate);
   const updatePos = useCanvasStore((state) => state.updatePos);
+  const computeTruthTable = useCanvasStore((state) => state.computeTruthTable);
 
   const [isWiring, setIsWiring] = useState<boolean>(false);
   const [wiringStartPin, setWiringStartPin] = useState<PinEntity | null>(null);
@@ -71,6 +72,7 @@ export default function CanvasElements({ canvasRef }: Props) {
 
         wiringPoints.pop(); // pop last element of wiring points as this will just be the pin
         addEntity(new WireEntity(wiringStartPin!, pin, wiringPoints));
+        computeTruthTable();
         simulate();
       } else {
         setWiringPoints([]);
@@ -78,7 +80,7 @@ export default function CanvasElements({ canvasRef }: Props) {
         setIsWiring(true);
       }
     },
-    [isWiring, wiringStartPin, wiringPoints, addEntity, simulate],
+    [isWiring, wiringStartPin, wiringPoints, addEntity, simulate, computeTruthTable],
   );
 
   const handleEntityStartDrag = (entity: CanvasEntity) => {

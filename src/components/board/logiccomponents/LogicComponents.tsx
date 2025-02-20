@@ -12,7 +12,7 @@ export default function LogicComponents() {
   const [expanded, setExpanded] = useState<boolean>(true);
 
   return (
-    <div className="absolute top-11 right-2 bottom-2 z-20">
+    <div className="h-full">
       <div
         className={`flex flex-col w-50 gap-1 bg-lightest dark:bg-dark border-1 border-dark-light dark:border-light-dark rounded-sm duration-100 ease overflow-hidden ${!expanded && "hover:border-violet-400"}`}
         style={{
