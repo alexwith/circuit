@@ -68,7 +68,7 @@ export default function Terminal({ flow, entity, onPinClick }: Props) {
       <div
         className="absolute z-20"
         style={{
-          left: `${flow === Flow.In ? 75 : -37}px`,
+          left: `${flow === Flow.In ? 75 : -75}px`,
           top: `${5}px`,
           display: entity ? "block" : "none",
         }}
