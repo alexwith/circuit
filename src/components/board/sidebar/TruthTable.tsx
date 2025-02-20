@@ -39,7 +39,7 @@ export default function TruthTable() {
                       className="px-1 border-1 border-light dark:border-light-dark font-medium"
                       key={i}
                     >
-                      {"Name"}
+                      {terminal.name}
                     </th>
                   ))}
               </tr>

@@ -6,6 +6,7 @@ export class TerminalEntity extends CanvasEntity {
   pos: Pos;
   flow: Flow;
   pin: PinEntity;
+  name: string;
 
   constructor(pos: Pos, flow: Flow) {
     super();
@@ -13,6 +14,7 @@ export class TerminalEntity extends CanvasEntity {
     this.pos = pos;
     this.flow = flow;
     this.pin = new PinEntity(this, flow);
+    this.name = "unnamed";
   }
 
   getPos(): Pos {
