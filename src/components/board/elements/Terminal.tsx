@@ -75,7 +75,7 @@ export default function Terminal({ flow, entity, onPinClick }: Props) {
       >
         <DynamicInput
           enabled={entity !== undefined}
-          className="opacity-80 text-light text-sm font-medium rounded-sm px-1 bg-dark border-1 border-light-dark"
+          className="opacity-80 text-dark dark:text-light text-sm font-medium rounded-sm px-1 bg-light dark:bg-dark border-1 border-dark-light dark:border-light-dark"
           defaultValue={entity?.name || ""}
           onChange={handleNameChange}
           maxLength={10}

@@ -55,7 +55,7 @@ export default function DynamicInput({
         }}
         onChange={handleChange}
       />
-      <span className="absolute -z-10 whitespace-pre opacity-0 left-0" ref={widthRef}>
+      <span className="absolute -z-10 whitespace-pre opacity-100" ref={widthRef}>
         {content}
       </span>
     </div>
