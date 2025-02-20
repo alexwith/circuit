@@ -15,6 +15,7 @@ export default function DynamicInput({
   className,
   maxLength,
 }: Props) {
+  const fieldRef = useRef<HTMLInputElement>(null);
   const widthRef = useRef<HTMLSpanElement>(null);
   const [content, setContent] = useState<string>(defaultValue);
   const [width, setWidth] = useState<number>(0);
@@ -26,6 +27,17 @@ export default function DynamicInput({
 
     setWidth(widthRef.current.offsetWidth);
   }, [content]);
+
+  useEffect(() => {
+    const field = fieldRef.current;
+    if (!field) {
+      return;
+    }
+
+    field.addEventListener("blur", () => {
+      console.log("blur");
+    });
+  }, [fieldRef]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -47,7 +59,8 @@ export default function DynamicInput({
       }}
     >
       <input
-        className="outline-none min-w-[20px] text-center bg-transparent"
+        ref={fieldRef}
+        className="outline-none min-w-[10px] text-center bg-transparent"
         value={content}
         type="text"
         style={{
@@ -55,7 +68,7 @@ export default function DynamicInput({
         }}
         onChange={handleChange}
       />
-      <span className="absolute -z-10 whitespace-pre opacity-100" ref={widthRef}>
+      <span className="absolute -z-10 whitespace-pre opacity-0" ref={widthRef}>
         {content}
       </span>
     </div>
