@@ -60,6 +60,10 @@ export default function WiringWire({ canvasRef, startPos, points, setPoints, onC
     };
 
     window.addEventListener("keyup", handleEscape);
+
+    return () => {
+      window.removeEventListener("keyup", handleEscape);
+    };
   }, [onCancel]);
 
   return (
