@@ -1,13 +1,28 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { TerminalEntity } from "../../../entities/canvas/TerminalEntity";
 import { useCanvasStore } from "../../../store/canvasStore";
 import { ChevronDownIcon, ChevronUpIcon } from "../../../common/icons";
+import { Flow } from "../../../common/types";
 
 export default function TruthTable() {
   const [expanded, setExpanded] = useState<boolean>(false);
 
   const truthTable = useCanvasStore((store) => store.truthTable);
   const entities = useCanvasStore((store) => store.entities);
+
+  const createTableHeads = useCallback(
+    (flow: Flow) => {
+      return entities
+        .filter((entity) => entity instanceof TerminalEntity)
+        .filter((terminal) => terminal.flow === flow)
+        .map((terminal, i) => (
+          <th className="px-1 border-1 border-light dark:border-light-dark font-medium" key={i}>
+            {terminal.name}
+          </th>
+        ));
+    },
+    [entities],
+  );
 
   return (
     <div
@@ -32,16 +47,8 @@ export default function TruthTable() {
           <table className="text-lightest text-center text-sm border-collapse border-hidden">
             <thead>
               <tr className="text-dark-light">
-                {entities
-                  .filter((entity) => entity instanceof TerminalEntity)
-                  .map((terminal, i) => (
-                    <th
-                      className="px-1 border-1 border-light dark:border-light-dark font-medium"
-                      key={i}
-                    >
-                      {terminal.name}
-                    </th>
-                  ))}
+                {createTableHeads(Flow.In)}
+                {createTableHeads(Flow.Out)}
               </tr>
             </thead>
             <tbody>
@@ -51,7 +58,7 @@ export default function TruthTable() {
                     {row.map((value, j) => (
                       <td
                         key={j}
-                        className="border-1 border-light dark:border-light-dark font-medium"
+                        className="px-1 border-1 border-light dark:border-light-dark font-medium"
                         style={{
                           color: value ? "var(--color-red-400)" : "var(--color-blue-400)",
                         }}
