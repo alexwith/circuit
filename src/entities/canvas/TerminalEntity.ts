@@ -14,7 +14,7 @@ export class TerminalEntity extends CanvasEntity {
     this.pos = pos;
     this.flow = flow;
     this.pin = new PinEntity(this, flow);
-    this.name = "unnamed";
+    this.name = "?";
   }
 
   getPos(): Pos {
