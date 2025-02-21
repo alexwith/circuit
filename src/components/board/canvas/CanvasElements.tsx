@@ -135,6 +135,9 @@ export default function CanvasElements({ canvasRef }: Props) {
           startPos={wiringStartPin!.getPos()}
           points={wiringPoints}
           setPoints={setWiringPoints}
+          onCancel={() => {
+            setIsWiring(false);
+          }}
         />
       )}
     </>

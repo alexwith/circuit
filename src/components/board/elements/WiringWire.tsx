@@ -9,9 +9,10 @@ type Props = {
   startPos: Pos;
   points: Pos[];
   setPoints: (points: Pos[]) => void;
+  onCancel: () => void;
 };
 
-export default function WiringWire({ canvasRef, startPos, points, setPoints }: Props) {
+export default function WiringWire({ canvasRef, startPos, points, setPoints, onCancel }: Props) {
   const canvasPos = useCanvasStore((state) => state.pos);
   const zoom = useCanvasStore((state) => state.zoom);
 
@@ -49,11 +50,33 @@ export default function WiringWire({ canvasRef, startPos, points, setPoints }: P
     };
   }, [setCursorPos, canvasRef, canvasPos, points, setPoints, zoom]);
 
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") {
+        return;
+      }
+
+      onCancel();
+    };
+
+    window.addEventListener("keyup", handleEscape);
+  }, [onCancel]);
+
   return (
-    <CanvasElement
-      pos={startPos}
-      zIndex={-10}
-      element={<Wire points={[startPos, ...points, cursorPos]} />}
-    />
+    <>
+      <CanvasElement
+        pos={startPos}
+        zIndex={-10}
+        element={<Wire points={[startPos, ...points, cursorPos]} />}
+      />
+      <h1
+        className="absolute text-dark dark:text-light text-sm font-medium rounded-sm px-1 bg-light dark:bg-dark border-1 border-dark-light dark:border-light-dark"
+        style={{
+          transform: `translate(${startPos.x - 80}px, ${startPos.y - 45}px)`,
+        }}
+      >
+        Press <span className="font-bold">Esc</span> to stop wiring
+      </h1>
+    </>
   );
 }
