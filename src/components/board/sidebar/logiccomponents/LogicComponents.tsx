@@ -12,7 +12,7 @@ export default function LogicComponents() {
   const [expanded, setExpanded] = useState<boolean>(true);
 
   return (
-    <div className="h-full">
+    <div className="h-full min-h-0">
       <div
         className={`flex flex-col w-50 gap-1 bg-lightest dark:bg-dark border-1 border-dark-light dark:border-light-dark rounded-sm duration-100 ease overflow-hidden ${!expanded && "hover:border-violet-400"}`}
         style={{
@@ -27,7 +27,7 @@ export default function LogicComponents() {
           {expanded ? <ChevronUpIcon size={14} /> : <ChevronDownIcon size={14} />}
         </div>
         <div className="w-full h-0.25 bg-dark-light dark:bg-light-dark" />
-        <div className="flex flex-col gap-4 px-3 py-1">
+        <div className="flex flex-col gap-4 px-3 py-1 overflow-auto">
           <div>
             <h1 className="text-sm select-none text-violet-400 font-medium">Terminals</h1>
             <div className="relative flex flex-col gap-1">
