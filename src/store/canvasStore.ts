@@ -90,13 +90,9 @@ export const useCanvasStore = create<State & Actions>((set) => ({
         executeCircuit(terminals, wires, gates);
       });
 
-      // trigger a canvas refresh
-      state.pos = {
-        x: state.pos.x,
-        y: state.pos.y,
+      return {
+        pos: { x: state.pos.x, y: state.pos.y }, // trigger canvas rerender
       };
-
-      return {};
     });
   },
 }));

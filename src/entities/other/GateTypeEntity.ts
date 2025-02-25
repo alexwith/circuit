@@ -9,5 +9,5 @@ export type GateTypeEntity = {
   truthTable: { [inputs: string]: string };
   width: number;
   height: number;
-  icon: ReactNode;
+  icon?: ReactNode;
 };

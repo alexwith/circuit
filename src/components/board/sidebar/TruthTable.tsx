@@ -63,7 +63,7 @@ export default function TruthTable() {
                           color: value ? "var(--color-red-400)" : "var(--color-blue-400)",
                         }}
                       >
-                        {value ? 1 : 0}
+                        {value ? "1" : "0"}
                       </td>
                     ))}
                   </tr>

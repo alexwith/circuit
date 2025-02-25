@@ -11,8 +11,8 @@ export const TERMINAL_PIN_OFFSET = (flow: Flow): Pos => ({ x: flow === Flow.In ?
 export const GATE_PIN_OFFSET = (gateType: GateTypeEntity, flow: Flow, yPos: number): Pos => {
   const amount = flow === Flow.In ? gateType.inputs : gateType.outputs;
   const spacing = gateType.height / amount;
+  const additionalXOffset = gateType.icon ? 5 * (flow === Flow.In ? -1 : 1) : 0;
   const offsetY = spacing / 2 + spacing * yPos - PIN_SIZE / 2;
-  const offsetX =
-    (flow === Flow.In ? 0 : gateType.width) - PIN_SIZE / 2 + 5 * (flow === Flow.In ? -1 : 1);
+  const offsetX = (flow === Flow.In ? 0 : gateType.width) - PIN_SIZE / 2 + additionalXOffset;
   return { x: offsetX, y: offsetY };
 };

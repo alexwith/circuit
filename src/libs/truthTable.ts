@@ -49,7 +49,10 @@ export function computeTruthTable(
 
   terminals
     .filter((terminal) => terminal.flow === Flow.In)
-    .forEach((terminal, i) => (terminal.pin.active = previousInputValues[i]));
+    .forEach((terminal, i) => {
+      terminal.pin.active = previousInputValues[i];
+    });
+  executeCircuit(terminals, wires, gates);
 
   return truthTable;
 }

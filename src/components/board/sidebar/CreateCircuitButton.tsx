@@ -1,10 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import TextInput from "../../common/TextInput";
+import { GateTypeEntity } from "../../../entities/other/GateTypeEntity";
+import { useCanvasStore } from "../../../store/canvasStore";
+import { TerminalEntity } from "../../../entities/canvas/TerminalEntity";
+import { Flow } from "../../../common/types";
+import { PIN_SIZE } from "../../../common/canvasConfig";
 
 export default function CreateCircuitButton() {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [name, setName] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+
+  const addGateType = useCanvasStore((state) => state.addGateType);
 
   useEffect(() => {
     const handleMouseDown = (event: MouseEvent) => {
@@ -13,6 +22,7 @@ export default function CreateCircuitButton() {
       }
 
       setMenuOpen(false);
+      setError(null);
     };
 
     window.addEventListener("mousedown", handleMouseDown);
@@ -23,7 +33,65 @@ export default function CreateCircuitButton() {
     setMenuOpen(true);
   };
 
-  const handleCreateClick = () => {};
+  const handleCreateClick = () => {
+    const { entities, truthTable, gateTypes } = useCanvasStore.getState();
+
+    const terminals: TerminalEntity[] = entities.filter(
+      (entity) => entity instanceof TerminalEntity,
+    );
+    const inputs: number = terminals.filter((terminal) => terminal.flow === Flow.In).length;
+    const outputs: number = terminals.length - inputs;
+
+    if (entities.length === 0 || inputs <= 0 || outputs <= 0) {
+      setError("The cirucuit needs at least one input and output.");
+      return;
+    }
+
+    if (name == null || name.length < 1) {
+      setError("You must provide a name for the circuit.");
+      return;
+    }
+
+    if (!/^[a-zA-Z0-9]+(?: [a-zA-Z0-9]+)*$/.test(name)) {
+      setError("The name can only contain letters, numbers and single spaces.");
+      return;
+    }
+
+    if (gateTypes.find((otherType) => otherType.name.toUpperCase() === name.toUpperCase())) {
+      setError("There's already a circuit with this name.");
+      return;
+    }
+
+    const flatTruthTable = truthTable.reduce<{ [inputs: string]: string }>(
+      (transformed, valuation) => {
+        transformed[
+          valuation
+            .slice(0, inputs)
+            .map((value) => (value ? "1" : "0"))
+            .join("")
+        ] = valuation
+          .slice(inputs)
+          .map((value) => (value ? "1" : "0"))
+          .join("");
+        return transformed;
+      },
+      {},
+    );
+
+    const gateType: GateTypeEntity = {
+      name,
+      nameOffset: { x: 0, y: 0 },
+      inputs,
+      outputs,
+      truthTable: flatTruthTable,
+      width: PIN_SIZE + 4 + 13 * name.length,
+      height: Math.max((PIN_SIZE + 6) * Math.max(inputs, outputs), 30),
+    };
+
+    setMenuOpen(false);
+    setError(null);
+    addGateType(gateType);
+  };
 
   return (
     <>
@@ -38,9 +106,10 @@ export default function CreateCircuitButton() {
               Convert your current logic into a reusable circuit that you can use within this
               project
             </p>
+            {error && <p className="text-xs text-red-400">{error}</p>}
             <TextInput
               className="border-darkest-light dark:border-lightest-dark text-dark dark:text-lightest text-sm"
-              onChange={() => {}}
+              onChange={(event) => setName(event.currentTarget.value)}
             />
             <div
               className="w-fit ml-auto bg-light-dark px-3 py-1 rounded-md border-1 border-transparent hover:cursor-pointer hover:border-violet-400"
