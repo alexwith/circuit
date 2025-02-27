@@ -6,6 +6,7 @@ import { TerminalEntity } from "../../../entities/canvas/TerminalEntity";
 import Pin from "./Pin";
 import { useCanvasStore } from "../../../store/canvasStore";
 import DynamicInput from "../../common/DynamicInput";
+import { dispatchElementChange } from "../../../libs/canvasElementChangeEvent";
 
 type Props = {
   flow: Flow;
@@ -16,8 +17,8 @@ type Props = {
 export default function Terminal({ flow, entity, onPinClick }: Props) {
   const [active, setActive] = useState<boolean>(false);
 
-  const simulate = useCanvasStore((store) => store.simulate);
-  const computeTruthTable = useCanvasStore((store) => store.computeTruthTable);
+  const simulate = useCanvasStore((actions) => actions.simulate);
+  const computeTruthTable = useCanvasStore((actions) => actions.computeTruthTable);
 
   const handlePinClick = () => {
     if (!entity || !onPinClick) {
@@ -45,6 +46,7 @@ export default function Terminal({ flow, entity, onPinClick }: Props) {
 
     entity.name = name;
     computeTruthTable();
+    dispatchElementChange();
   };
 
   return (
@@ -76,7 +78,7 @@ export default function Terminal({ flow, entity, onPinClick }: Props) {
       >
         <DynamicInput
           enabled={entity !== undefined}
-          className="text-dark dark:text-light text-sm font-medium rounded-sm px-1 bg-light dark:bg-dark border-1 border-dark-light dark:border-light-dark"
+          className="select-none text-dark dark:text-light text-sm font-medium rounded-sm px-1 bg-light dark:bg-dark border-1 border-dark-light dark:border-light-dark"
           defaultValue={entity?.name || ""}
           onChange={handleNameChange}
           maxLength={10}

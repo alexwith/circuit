@@ -11,6 +11,7 @@ import Wire from "../elements/Wire";
 import { Pos } from "../../../common/types";
 import Gate from "../elements/Gate";
 import { GateEntity } from "../../../entities/canvas/GateEntity";
+import { dispatchElementChange } from "../../../libs/canvasElementChangeEvent";
 
 type Props = {
   canvasRef: RefObject<SVGSVGElement>;
@@ -20,10 +21,10 @@ export default function CanvasElements({ canvasRef }: Props) {
   const entities = useCanvasStore((state) => state.entities);
   const zoom = useCanvasStore((state) => state.zoom);
 
-  const addEntity = useCanvasStore((state) => state.addEntity);
-  const simulate = useCanvasStore((state) => state.simulate);
-  const updatePos = useCanvasStore((state) => state.updatePos);
-  const computeTruthTable = useCanvasStore((state) => state.computeTruthTable);
+  const addEntity = useCanvasStore((actions) => actions.addEntity);
+  const simulate = useCanvasStore((actions) => actions.simulate);
+  const updatePos = useCanvasStore((actions) => actions.updatePos);
+  const computeTruthTable = useCanvasStore((actions) => actions.computeTruthTable);
 
   const [isWiring, setIsWiring] = useState<boolean>(false);
   const [wiringStartPin, setWiringStartPin] = useState<PinEntity | null>(null);
@@ -90,6 +91,7 @@ export default function CanvasElements({ canvasRef }: Props) {
     }
 
     setDraggingEntity(entity);
+    dispatchElementChange();
   };
 
   const createElement = (entity: CanvasEntity): ReactNode => {

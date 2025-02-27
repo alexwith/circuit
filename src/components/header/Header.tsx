@@ -1,3 +1,4 @@
+import SaveToggle from "./SaveToggle";
 import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
@@ -17,7 +18,10 @@ export default function Header() {
           GitHub
         </a>
       </div>
-      <ThemeToggle />
+      <div className="flex items-center gap-3">
+        <SaveToggle />
+        <ThemeToggle />
+      </div>
     </div>
   );
 }

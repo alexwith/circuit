@@ -47,7 +47,7 @@ export default function DynamicInput({
       }}
     >
       <input
-        className="outline-none min-w-[10px] text-center bg-transparent"
+        className="select-none outline-none min-w-[10px] text-center bg-transparent"
         value={content}
         type="text"
         style={{
@@ -55,7 +55,7 @@ export default function DynamicInput({
         }}
         onChange={handleChange}
       />
-      <span className="absolute whitespace-pre top-[10000px]" ref={widthRef}>
+      <span className="absolute select-none whitespace-pre top-[10000px]" ref={widthRef}>
         {content}
       </span>
     </div>

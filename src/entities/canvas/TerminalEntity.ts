@@ -8,13 +8,13 @@ export class TerminalEntity extends CanvasEntity {
   pin: PinEntity;
   name: string;
 
-  constructor(pos: Pos, flow: Flow) {
+  constructor(pos: Pos, flow: Flow, name?: string) {
     super();
 
     this.pos = pos;
     this.flow = flow;
     this.pin = new PinEntity(this, flow);
-    this.name = "?";
+    this.name = name || "?";
   }
 
   getPos(): Pos {

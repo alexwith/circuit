@@ -7,9 +7,9 @@ import { useCanvasStore } from "../../../../store/canvasStore";
 import Gate from "../../elements/Gate";
 
 export default function LogicComponents() {
-  const gateTypes = useCanvasStore((state) => state.gateTypes);
-
   const [expanded, setExpanded] = useState<boolean>(true);
+
+  const gateTypes = useCanvasStore((state) => state.gateTypes);
 
   return (
     <div className="h-full min-h-0">

@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import TextInput from "../../common/TextInput";
-import { GateTypeEntity } from "../../../entities/other/GateTypeEntity";
+import { createGateTypeEntity, GateTypeEntity } from "../../../entities/other/GateTypeEntity";
 import { useCanvasStore } from "../../../store/canvasStore";
 import { TerminalEntity } from "../../../entities/canvas/TerminalEntity";
 import { Flow } from "../../../common/types";
-import { PIN_SIZE } from "../../../common/canvasConfig";
 
 export default function CreateCircuitButton() {
   const menuRef = useRef<HTMLDivElement>(null);
@@ -13,7 +12,7 @@ export default function CreateCircuitButton() {
   const [name, setName] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
-  const addGateType = useCanvasStore((state) => state.addGateType);
+  const addGateType = useCanvasStore((actions) => actions.addGateType);
 
   useEffect(() => {
     const handleMouseDown = (event: MouseEvent) => {
@@ -78,15 +77,7 @@ export default function CreateCircuitButton() {
       {},
     );
 
-    const gateType: GateTypeEntity = {
-      name,
-      nameOffset: { x: 0, y: 0 },
-      inputs,
-      outputs,
-      truthTable: flatTruthTable,
-      width: PIN_SIZE + 4 + 13 * name.length,
-      height: Math.max((PIN_SIZE + 6) * Math.max(inputs, outputs), 30),
-    };
+    const gateType: GateTypeEntity = createGateTypeEntity(name, inputs, outputs, flatTruthTable);
 
     setMenuOpen(false);
     setError(null);

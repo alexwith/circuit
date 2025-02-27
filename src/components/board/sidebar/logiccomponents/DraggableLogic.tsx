@@ -11,9 +11,9 @@ type Props = {
 };
 
 export default function DraggableLogic({ type, metadata, name, displayElement }: Props) {
-  const setComponentDrag = useCanvasStore((state) => state.setComponentDrag);
-
   const [dragImage, setDragImage] = useState<HTMLDivElement | null>(null);
+
+  const setComponentDrag = useCanvasStore((actions) => actions.setComponentDrag);
 
   const handleDragStart = (event: DragEvent) => {
     if (!dragImage) {

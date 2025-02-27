@@ -13,10 +13,10 @@ type Props = {
 };
 
 export default function WiringWire({ canvasRef, startPos, points, setPoints, onCancel }: Props) {
-  const canvasPos = useCanvasStore((state) => state.pos);
-  const zoom = useCanvasStore((state) => state.zoom);
-
   const [cursorPos, setCursorPos] = useState<Pos>(startPos);
+
+  const canvasPos = useCanvasStore((actions) => actions.pos);
+  const zoom = useCanvasStore((actions) => actions.zoom);
 
   useEffect(() => {
     const canvas = canvasRef.current;

@@ -7,8 +7,8 @@ import { Flow } from "../../../common/types";
 export default function TruthTable() {
   const [expanded, setExpanded] = useState<boolean>(false);
 
-  const truthTable = useCanvasStore((store) => store.truthTable);
-  const entities = useCanvasStore((store) => store.entities);
+  const truthTable = useCanvasStore((state) => state.truthTable);
+  const entities = useCanvasStore((state) => state.entities);
 
   const createTableHeads = useCallback(
     (flow: Flow) => {
@@ -28,7 +28,7 @@ export default function TruthTable() {
     <div
       className={`flex flex-col w-50 max-h-60 gap-1 bg-lightest dark:bg-dark border-1 border-dark-light dark:border-light-dark rounded-sm ${!expanded && "overflow-hidden hover:border-violet-400"}`}
       style={{
-        height: expanded ? "fit-content" : "30px",
+        height: expanded ? "fit-content" : "33px",
       }}
     >
       <div

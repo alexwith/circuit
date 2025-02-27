@@ -21,6 +21,8 @@ type Actions = {
   updatePos: (modifier: (prev: Pos) => Pos) => void;
   updateZoom: (modifier: (prev: number) => number) => void;
   zoomToPoint: (target: Pos, zoom: number) => void;
+  setEntities: (entities: CanvasEntity[]) => void;
+  setGateTypes: (gateTypes: GateTypeEntity[]) => void;
   addEntity: (entity: CanvasEntity) => void;
   addGateType: (gateType: GateTypeEntity) => void;
   setComponentDrag: (componentDrag: ComponentDrag | null) => void;
@@ -63,6 +65,14 @@ export const useCanvasStore = create<State & Actions>((set) => ({
         pos: { x, y },
       };
     }),
+  setEntities: (entities: CanvasEntity[]) =>
+    set(() => ({
+      entities,
+    })),
+  setGateTypes: (gateTypes: GateTypeEntity[]) =>
+    set(() => ({
+      gateTypes,
+    })),
   addEntity: (entity: CanvasEntity) =>
     set((state) => {
       return {

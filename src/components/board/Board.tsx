@@ -8,9 +8,9 @@ import Sidebar from "./sidebar/Sidebar";
 export default function Board() {
   const boardRef = useRef<HTMLDivElement>(null);
 
-  const updatePos = useCanvasStore((state) => state.updatePos);
-  const updateZoom = useCanvasStore((state) => state.updateZoom);
-  const zoomToPoint = useCanvasStore((state) => state.zoomToPoint);
+  const updatePos = useCanvasStore((actions) => actions.updatePos);
+  const updateZoom = useCanvasStore((actions) => actions.updateZoom);
+  const zoomToPoint = useCanvasStore((actions) => actions.zoomToPoint);
 
   const handleDefaultZoom = (zoom: number) => {
     const rect = boardRef.current?.getBoundingClientRect();
