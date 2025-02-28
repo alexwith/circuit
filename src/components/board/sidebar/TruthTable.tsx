@@ -39,7 +39,7 @@ export default function TruthTable() {
         {expanded ? <ChevronUpIcon size={14} /> : <ChevronDownIcon size={14} />}
       </div>
       <div className="overflow-auto py-1 px-3">
-        {truthTable.length === 0 ? (
+        {truthTable.length === 0 || truthTable[0].length === 0 ? (
           <p className="text-sm text-darkest-light dark:text-dark-light font-medium">
             There is not enough information to generate a truth table
           </p>

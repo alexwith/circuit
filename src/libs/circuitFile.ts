@@ -7,7 +7,7 @@ import { TerminalEntity } from "../entities/canvas/TerminalEntity";
 import { GateEntity } from "../entities/canvas/GateEntity";
 import { WireEntity } from "../entities/canvas/WireEntity";
 import { Flow, Pos } from "../common/types";
-import { basicLogicGates } from "../common/basicGates";
+import { basicCircuits } from "../common/basicGates";
 
 /*
 Circuit file format
@@ -50,9 +50,9 @@ export function serialize(gateTypes: GateTypeEntity[], entities: CanvasEntity[])
   buffer.writeUInt8(0x43); // magic
   buffer.writeUInt8(0x01); // version
 
-  buffer.writeUInt16(gateTypes.length - basicLogicGates.length);
+  buffer.writeUInt16(gateTypes.length - basicCircuits.length);
   for (const gateType of gateTypes) {
-    if (basicLogicGates.find((basicGate) => basicGate.name === gateType.name)) {
+    if (basicCircuits.find((basicGate) => basicGate.name === gateType.name)) {
       continue;
     }
 
@@ -88,7 +88,7 @@ export function deserialize(data: ArrayBuffer): [GateTypeEntity[], CanvasEntity[
   buffer.readUInt8(); // read version
 
   const gateTypes: GateTypeEntity[] = [];
-  gateTypes.push(...basicLogicGates);
+  gateTypes.push(...basicCircuits);
 
   const gateTypesSize = buffer.readUInt16();
   for (let i = 0; i < gateTypesSize; i++) {

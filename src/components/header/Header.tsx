@@ -5,6 +5,7 @@ import ThemeToggle from "./ThemeToggle";
 import { deserialize } from "../../libs/circuitFile";
 import { useCanvasStore } from "../../store/canvasStore";
 import { dispatchElementChange } from "../../libs/canvasElementChangeEvent";
+import { basicCircuits } from "../../common/basicGates";
 
 export default function Header() {
   const [exporting, setExporting] = useState<boolean>(false);
@@ -13,10 +14,6 @@ export default function Header() {
   const setEntities = useCanvasStore((actions) => actions.setEntities);
   const computeTruthTable = useCanvasStore((actions) => actions.computeTruthTable);
   const simulate = useCanvasStore((actions) => actions.simulate);
-
-  const handleExportingClick = () => {
-    setExporting(true);
-  };
 
   const handleImport = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -41,6 +38,18 @@ export default function Header() {
     reader.readAsArrayBuffer(file);
   };
 
+  const handleExportingClick = () => {
+    setExporting(true);
+  };
+
+  const handleClearCanvasClick = () => {
+    localStorage.removeItem("current-circuit");
+
+    setGateTypes(basicCircuits);
+    setEntities([]);
+    computeTruthTable();
+  };
+
   return (
     <div className="flex flex-row items-center justify-between px-10 w-full h-15 border-b-2 border-b-light dark:border-b-dark">
       <h1 className="border-violet-400 border-b-3 font-black text-2xl text-dark dark:text-light">
@@ -55,6 +64,9 @@ export default function Header() {
         </div>
         <p className="hover:text-violet-400 hover:cursor-pointer" onClick={handleExportingClick}>
           Export
+        </p>
+        <p className="hover:text-violet-400 hover:cursor-pointer" onClick={handleClearCanvasClick}>
+          Clear Canvas
         </p>
         <a
           className="hover:text-violet-400 hover:cursor-pointer"

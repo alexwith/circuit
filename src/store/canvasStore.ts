@@ -3,7 +3,7 @@ import { ComponentDrag, Pos } from "../common/types";
 import { MAX_ZOOM, MIN_ZOOM } from "../common/constants";
 import { CanvasEntity } from "../entities/canvas/CanvasEntity";
 import { GateTypeEntity } from "../entities/other/GateTypeEntity";
-import { basicLogicGates } from "../common/basicGates";
+import { basicCircuits } from "../common/basicGates";
 import { executeCircuit } from "../libs/circuit";
 import { groupByEntityType } from "../libs/entityUtil";
 import { computeTruthTable } from "../libs/truthTable";
@@ -34,7 +34,7 @@ export const useCanvasStore = create<State & Actions>((set) => ({
   pos: { x: 0, y: 0 },
   zoom: 1,
   entities: [],
-  gateTypes: basicLogicGates,
+  gateTypes: basicCircuits,
   truthTable: [],
   componentDrag: null,
 

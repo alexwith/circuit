@@ -1,6 +1,6 @@
 import { GateTypeEntity } from "../entities/other/GateTypeEntity";
 
-export const basicLogicGates: GateTypeEntity[] = [
+export const basicCircuits: GateTypeEntity[] = [
   {
     name: "NOT",
     nameOffset: { x: -8, y: 0 },
