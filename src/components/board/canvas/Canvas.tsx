@@ -18,6 +18,7 @@ export default function Canvas() {
   const zoom = useCanvasStore((state) => state.zoom);
   const canvasPos = useCanvasStore((state) => state.pos);
   const componentDrag = useCanvasStore((state) => state.componentDrag);
+  const backgroundDots = useCanvasStore((state) => state.backgroundDots);
 
   const zoomToPoint = useCanvasStore((actions) => actions.zoomToPoint);
   const updatePos = useCanvasStore((actions) => actions.updatePos);
@@ -137,7 +138,9 @@ export default function Canvas() {
           className="fill-dark-light dark:fill-light-dark"
         />
       </pattern>
-      <rect x="0" y="0" width="100%" height="100%" fill="url(#background-dots)" />
+      {backgroundDots && (
+        <rect x="0" y="0" width="100%" height="100%" fill="url(#background-dots)" />
+      )}
       <rect
         ref={draggableRef}
         x="0"

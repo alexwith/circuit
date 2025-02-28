@@ -15,6 +15,7 @@ type State = {
   gateTypes: GateTypeEntity[];
   truthTable: boolean[][];
   componentDrag: ComponentDrag | null;
+  backgroundDots: boolean;
 };
 
 type Actions = {
@@ -26,6 +27,7 @@ type Actions = {
   addEntity: (entity: CanvasEntity) => void;
   addGateType: (gateType: GateTypeEntity) => void;
   setComponentDrag: (componentDrag: ComponentDrag | null) => void;
+  setBackgroundDots: (enabled: boolean) => void;
   computeTruthTable: () => void;
   simulate: () => void;
 };
@@ -37,6 +39,7 @@ export const useCanvasStore = create<State & Actions>((set) => ({
   gateTypes: basicCircuits,
   truthTable: [],
   componentDrag: null,
+  backgroundDots: true,
 
   updatePos: (modifier: (prev: Pos) => Pos) =>
     set((state) => ({
@@ -86,6 +89,10 @@ export const useCanvasStore = create<State & Actions>((set) => ({
   setComponentDrag: (componentDrag: ComponentDrag | null) =>
     set(() => ({
       componentDrag,
+    })),
+  setBackgroundDots: (enabled: boolean) =>
+    set(() => ({
+      backgroundDots: enabled,
     })),
   computeTruthTable: () => {
     set((state) => ({
