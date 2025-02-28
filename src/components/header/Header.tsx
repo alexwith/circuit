@@ -1,13 +1,44 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import ExportMenu from "./ExportMenu";
 import SaveToggle from "./SaveToggle";
 import ThemeToggle from "./ThemeToggle";
+import { deserialize } from "../../libs/circuitFile";
+import { useCanvasStore } from "../../store/canvasStore";
+import { dispatchElementChange } from "../../libs/canvasElementChangeEvent";
 
 export default function Header() {
   const [exporting, setExporting] = useState<boolean>(false);
 
+  const setGateTypes = useCanvasStore((actions) => actions.setGateTypes);
+  const setEntities = useCanvasStore((actions) => actions.setEntities);
+  const computeTruthTable = useCanvasStore((actions) => actions.computeTruthTable);
+  const simulate = useCanvasStore((actions) => actions.simulate);
+
   const handleExportingClick = () => {
     setExporting(true);
+  };
+
+  const handleImport = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files) {
+      return;
+    }
+
+    const file = files[0];
+    event.target.value = "";
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const buffer = reader.result as ArrayBuffer;
+      const [gateTypes, entities] = deserialize(buffer)!;
+      setGateTypes(gateTypes);
+      setEntities(entities);
+      computeTruthTable();
+      simulate();
+      dispatchElementChange();
+    };
+
+    reader.readAsArrayBuffer(file);
   };
 
   return (
@@ -16,7 +47,12 @@ export default function Header() {
         Circuit
       </h1>
       <div className="flex font-medium gap-5 text-sm text-darkest dark:text-lightest">
-        <p className="hover:text-violet-400 hover:cursor-pointer">Import</p>
+        <div>
+          <input className="hidden" type="file" id="import-button" onChange={handleImport} />
+          <label className="hover:text-violet-400 hover:cursor-pointer" htmlFor="import-button">
+            Import
+          </label>
+        </div>
         <p className="hover:text-violet-400 hover:cursor-pointer" onClick={handleExportingClick}>
           Export
         </p>
