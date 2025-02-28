@@ -11,7 +11,7 @@ import { deserialize } from "../../../libs/circuitFile";
 import { dispatchElementChange } from "../../../libs/canvasElementChangeEvent";
 
 export default function Canvas() {
-  const ref = useRef<SVGSVGElement>(null);
+  const ref = useRef<SVGSVGElement | null>(null);
   const draggableRef = useRef<SVGRectElement>(null);
   const elementsRef = useRef<SVGSVGElement>(null);
 

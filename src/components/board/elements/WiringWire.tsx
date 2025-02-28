@@ -5,7 +5,7 @@ import Wire from "./Wire";
 import CanvasElement from "../canvas/CanvasElement";
 
 type Props = {
-  canvasRef: RefObject<SVGSVGElement>;
+  canvasRef: RefObject<SVGSVGElement | null>;
   startPos: Pos;
   points: Pos[];
   setPoints: (points: Pos[]) => void;

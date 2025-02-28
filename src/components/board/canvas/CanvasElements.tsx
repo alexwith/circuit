@@ -14,7 +14,7 @@ import { GateEntity } from "../../../entities/canvas/GateEntity";
 import { dispatchElementChange } from "../../../libs/canvasElementChangeEvent";
 
 type Props = {
-  canvasRef: RefObject<SVGSVGElement>;
+  canvasRef: RefObject<SVGSVGElement | null>;
 };
 
 export default function CanvasElements({ canvasRef }: Props) {
