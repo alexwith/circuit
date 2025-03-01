@@ -45,7 +45,7 @@ export default class OffsetBuffer {
     return result;
   }
 
-  readBigInt64BE(): bigint {
+  readBigInt64BE(): BigInt {
     const result = this.buffer.readBigInt64BE(this.offset);
     this.offset += 8;
 
