@@ -54,7 +54,7 @@ export default function SaveToggle() {
   if (!saved) {
     return (
       <h1
-        className="bg-red-500/30 text-red-500 text-sm font-medium rounded-md px-2 py-1 hover:cursor-pointer"
+        className="hidden sm:block bg-red-500/30 text-red-500 text-sm font-medium rounded-md px-2 py-1 hover:cursor-pointer"
         onClick={handleSave}
       >
         Not Saved
@@ -63,7 +63,7 @@ export default function SaveToggle() {
   }
 
   return (
-    <h1 className="bg-green-500/30 text-green-500 text-sm font-medium rounded-md px-2 py-1">
+    <h1 className="hidden sm:block bg-green-500/30 text-green-500 text-sm font-medium rounded-md px-2 py-1">
       Saved
     </h1>
   );

@@ -56,16 +56,22 @@ export default function Header() {
         Circuit
       </h1>
       <div className="flex font-medium gap-5 text-sm text-darkest dark:text-lightest">
-        <div>
+        <div className="hidden sm:block">
           <input className="hidden" type="file" id="import-button" onChange={handleImport} />
           <label className="hover:text-violet-400 hover:cursor-pointer" htmlFor="import-button">
             Import
           </label>
         </div>
-        <p className="hover:text-violet-400 hover:cursor-pointer" onClick={handleExportingClick}>
+        <p
+          className="hidden sm:block hover:text-violet-400 hover:cursor-pointer"
+          onClick={handleExportingClick}
+        >
           Export
         </p>
-        <p className="hover:text-violet-400 hover:cursor-pointer" onClick={handleClearCanvasClick}>
+        <p
+          className="hidden sm:block hover:text-violet-400 hover:cursor-pointer"
+          onClick={handleClearCanvasClick}
+        >
           Clear Canvas
         </p>
         <a
