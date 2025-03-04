@@ -27,13 +27,8 @@ jobs:
                   username: ${{ github.actor }}
                   password: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Extract metadata (tags, labels) for Docker
-              uses: docker/metadata-action@v5
-              with:
-                  images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
             - name: Build and push Docker image
-              uses: docker/build-push-action@v6
-              with:
-                  push: true
-                  tags: ${{ steps.meta.outputs.tags }}
+              id: push
+              run: |
+                  docker build . --tag ghcr.io/alexwith/circuit:latest
+                  docker push ghcr.io/alexwith/circuit:latest
