@@ -27,8 +27,9 @@ jobs:
                   username: ${{ github.actor }}
                   password: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Build and push Docker image
-              id: push
-              run: |
-                  docker build . --tag ghcr.io/alexwith/circuit:latest
-                  docker push ghcr.io/alexwith/circuit:latest
+            - name: Build and push
+              uses: docker/build-push-action@v6
+              with:
+                  platforms: linux/amd64,linux/arm64
+                  push: true
+                  tags: alexwith/circuit:latest
