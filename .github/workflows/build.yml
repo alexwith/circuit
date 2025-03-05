@@ -41,4 +41,4 @@ jobs:
                   context: .
                   platforms: linux/arm64
                   push: true
-                  tags: alexwith/circuit:latest
+                  tags: ${{ env.REGISTRY }}/${{ github.repository }}:latest
