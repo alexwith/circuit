@@ -7,7 +7,7 @@ import { Flow } from "../../../common/types";
 export default function TruthTable() {
   const [expanded, setExpanded] = useState<boolean>(false);
 
-  const truthTable = useCanvasStore((state) => state.truthTable);
+  const truthTable: boolean[][] = useCanvasStore((state) => state.truthTable);
   const entities = useCanvasStore((state) => state.entities);
 
   const createTableHeads = useCallback(
@@ -23,6 +23,8 @@ export default function TruthTable() {
     },
     [entities],
   );
+
+  console.log(truthTable.length);
 
   return (
     <div
@@ -42,6 +44,10 @@ export default function TruthTable() {
         {truthTable.length === 0 || truthTable[0].length === 0 ? (
           <p className="text-sm text-darkest-light dark:text-dark-light font-medium">
             There is not enough information to generate a truth table
+          </p>
+        ) : truthTable.length > 1000 ? (
+          <p className="text-sm text-darkest-light dark:text-dark-light font-medium">
+            The truth table is too large to display
           </p>
         ) : (
           <table className="text-lightest text-center text-sm border-collapse border-hidden">

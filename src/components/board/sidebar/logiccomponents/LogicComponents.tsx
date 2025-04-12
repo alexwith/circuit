@@ -5,11 +5,17 @@ import Terminal from "../../elements/Terminal";
 import { EntityType, Flow } from "../../../../common/types";
 import { useCanvasStore } from "../../../../store/canvasStore";
 import Gate from "../../elements/Gate";
+import { TerminalEntity } from "../../../../entities/canvas/TerminalEntity";
+
+const INPUTS_WARNING_THRESHOLD = 20;
 
 export default function LogicComponents() {
   const [expanded, setExpanded] = useState<boolean>(true);
 
   const gateTypes = useCanvasStore((state) => state.gateTypes);
+  const entities = useCanvasStore((state) => state.entities);
+
+  const terminalCount = entities.filter((entity) => entity instanceof TerminalEntity && entity.flow == Flow.In).length;
 
   return (
     <div className="h-full min-h-0">
@@ -29,7 +35,7 @@ export default function LogicComponents() {
         <div className="w-full h-0.25 bg-dark-light dark:bg-light-dark" />
         <div className="flex flex-col gap-4 px-3 py-1 overflow-auto">
           <div>
-            <h1 className="text-sm select-none text-violet-400 font-medium">Terminals</h1>
+            <h1 className="text-sm select-none text-violet-400 font-medium">Terminals</h1>            
             <div className="relative flex flex-col gap-1">
               <DraggableLogic
                 type={EntityType.InTerminal}
@@ -42,6 +48,12 @@ export default function LogicComponents() {
                 displayElement={<Terminal flow={Flow.Out} />}
               />
             </div>
+            {terminalCount >= INPUTS_WARNING_THRESHOLD && (
+              <div className="my-2">
+                <h1 className="text-red-400 text-sm font-medium">Warning!</h1>
+                <p className="text-lightest-dark dark:text-dark-light text-xs">Adding more inputs may slow the website, as the circuit already has over a million valuations.</p>
+              </div>
+            )}
           </div>
           <div>
             <h1 className="text-sm select-none text-violet-400 font-medium">Circuits</h1>
