@@ -13,6 +13,8 @@ export default function CreateCircuitButton() {
   const [error, setError] = useState<string | null>(null);
 
   const addGateType = useCanvasStore((actions) => actions.addGateType);
+  const setEntities = useCanvasStore((actions) => actions.setEntities);
+  const computeTruthTable = useCanvasStore((actions) => actions.computeTruthTable);
 
   useEffect(() => {
     const handleMouseDown = (event: MouseEvent) => {
@@ -82,6 +84,8 @@ export default function CreateCircuitButton() {
     setMenuOpen(false);
     setError(null);
     addGateType(gateType);
+    setEntities([]);
+    computeTruthTable();
   };
 
   return (
