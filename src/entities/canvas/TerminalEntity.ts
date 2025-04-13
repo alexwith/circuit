@@ -5,14 +5,16 @@ import { PinEntity } from "./PinEntity";
 export class TerminalEntity extends CanvasEntity {
   pos: Pos;
   flow: Flow;
+  group: TerminalEntity[];
   pin: PinEntity;
   name: string;
 
-  constructor(pos: Pos, flow: Flow, name?: string) {
+  constructor(pos: Pos, flow: Flow, group: TerminalEntity[], name?: string) {
     super();
 
     this.pos = pos;
     this.flow = flow;
+    this.group = group;
     this.pin = new PinEntity(this, flow);
     this.name = name || "?";
   }

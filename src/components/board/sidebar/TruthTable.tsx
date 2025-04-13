@@ -22,9 +22,7 @@ export default function TruthTable() {
         ));
     },
     [entities],
-  );
-
-  console.log(truthTable.length);
+  );  
 
   return (
     <div

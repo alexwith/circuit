@@ -172,7 +172,7 @@ function deserializeEntities(buffer: OffsetBuffer, gateTypes: GateTypeEntity[]):
     const flow = buffer.readUInt8();
     const name = buffer.readString();
     const pos = { x: buffer.readUInt16(), y: buffer.readUInt16() };
-    entities.push(new TerminalEntity(pos, flow, name));
+    entities.push(new TerminalEntity(pos, flow, [], name));
   }
 
   const wiresSize = buffer.readUInt16();

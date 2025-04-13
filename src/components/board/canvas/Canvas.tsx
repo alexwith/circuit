@@ -72,21 +72,32 @@ export default function Canvas() {
       y: (event.clientY - canvasRect.top - canvasPos.y) / zoom - dropOffset.y,
     };
 
-    let entity = null;
+    const metadata = componentDrag.metadata;
+
     if (isTerminal(componentDrag.type)) {
-      entity = new TerminalEntity(
-        pos,
-        componentDrag.type === EntityType.InTerminal ? Flow.In : Flow.Out,
-      );
+      let groupSize = (metadata as any)?.groupSize;
+      if (!groupSize) {
+        groupSize = 1;
+      }
+
+      let nextPos: Pos = { x: pos.x, y: pos.y };
+      let group: TerminalEntity[] = [];
+      for (let i = 0; i < groupSize; i++) {
+        const entity = new TerminalEntity(
+          nextPos,
+          componentDrag.type === EntityType.InTerminal ? Flow.In : Flow.Out,
+          group
+        );
+        group.push(entity);
+
+        addEntity(entity);
+
+        nextPos = { x: nextPos.x, y: nextPos.y + 40 };
+      }
     } else if (componentDrag.type === EntityType.Gate) {
-      entity = new GateEntity(pos, componentDrag.metadata as GateTypeEntity);
+      addEntity(new GateEntity(pos, metadata as GateTypeEntity));
     }
 
-    if (!entity) {
-      return;
-    }
-
-    addEntity(entity);
     computeTruthTable();
     dispatchElementChange();
   };
@@ -119,7 +130,7 @@ export default function Canvas() {
   return (
     <svg
       ref={ref}
-      className="absolute w-full h-full top-0 left-0"
+      className="absolute w-full h-full top-0 left-0 select-none"
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >

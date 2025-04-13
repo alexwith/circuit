@@ -8,10 +8,11 @@ import { TerminalEntity } from "../../../entities/canvas/TerminalEntity";
 import { PinEntity } from "../../../entities/canvas/PinEntity";
 import { WireEntity } from "../../../entities/canvas/WireEntity";
 import Wire from "../elements/Wire";
-import { Pos } from "../../../common/types";
+import { Flow, Pos } from "../../../common/types";
 import Gate from "../elements/Gate";
 import { GateEntity } from "../../../entities/canvas/GateEntity";
 import { dispatchElementChange } from "../../../libs/canvasElementChangeEvent";
+import TerminalGroup from "../elements/TerminalGroup";
 
 type Props = {
   canvasRef: RefObject<SVGSVGElement | null>;
@@ -41,8 +42,27 @@ export default function CanvasElements({ canvasRef }: Props) {
       setDraggingEntity(null);
     };
 
-    let currentPos = draggingEntity.getPos();
     const handleMouseMove = (event: MouseEvent) => {
+      let entities = [draggingEntity];
+      if (draggingEntity instanceof TerminalEntity) {
+        entities = (draggingEntity as TerminalEntity).group;
+      }
+
+      for (let entity of entities) {
+        let currentPos = entity.getPos();
+        const newPos = {
+          x: currentPos.x + event.movementX / zoom,
+          y: currentPos.y + event.movementY / zoom,
+        };
+        currentPos = newPos;
+
+        entity.updatePos(() => ({
+          x: newPos.x,
+          y: newPos.y,
+        }));
+      }
+
+      /*let currentPos = draggingEntity.getPos();
       const newPos = {
         x: currentPos.x + event.movementX / zoom,
         y: currentPos.y + event.movementY / zoom,
@@ -52,7 +72,7 @@ export default function CanvasElements({ canvasRef }: Props) {
       draggingEntity!.updatePos(() => ({
         x: newPos.x,
         y: newPos.y,
-      }));
+      }));*/
       // trigger a rerender of the canvas
       updatePos((prev) => ({ x: prev.x, y: prev.y }));
     };
@@ -81,7 +101,7 @@ export default function CanvasElements({ canvasRef }: Props) {
         setIsWiring(true);
       }
     },
-    [isWiring, wiringStartPin, wiringPoints, addEntity, simulate, computeTruthTable],
+    [isWiring, wiringStartPin, wiringPoints, addEntity, simulate, computeTruthTable]
   );
 
   const handleEntityStartDrag = (entity: CanvasEntity) => {
@@ -142,6 +162,19 @@ export default function CanvasElements({ canvasRef }: Props) {
           }}
         />
       )}
+      {entities.map((entity, key) => {
+        if (!(entity instanceof TerminalEntity)) {
+          return;
+        }
+
+        const terminal = entity as TerminalEntity;
+        const group = terminal.group;
+        if (group.length <= 1 || group.indexOf(terminal) == 0) {
+          return;
+        }
+
+        return <TerminalGroup key={key} group={terminal.group} />;
+      })}
     </>
   );
 }
