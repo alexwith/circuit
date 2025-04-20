@@ -10,7 +10,7 @@ export default function TerminalGroup({ group }: Props) {
   let result = 0;
   for (let i = 0; i < group.length; i++) {    
     if (group[i].pin.active) {
-      result |= 1 << i;
+      result |= 1 << (group.length - i - 1);
     }
   }
 
