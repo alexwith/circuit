@@ -11,11 +11,11 @@ export function computeTruthTable(
 ): boolean[][] {  
   const truthTable: boolean[][] = [];
 
-  const inputTerminals = terminals.filter((pin) => pin.flow === Flow.In);
-  const outputTerminals = terminals.filter((pin) => pin.flow === Flow.Out);
+  const inputTerminals = terminals.filter((pin) => pin.flow === Flow.In).sort((a, b) => a.pos.y - b.pos.y);  
+  const outputTerminals = terminals.filter((pin) => pin.flow === Flow.Out).sort((a, b) => a.pos.y - b.pos.y);
   const combinationAmount = 1 << inputTerminals.length; // 2^inputTerminals cause Math#pow is slow
 
-  const previousInputValues = inputTerminals.map((terminal) => terminal.pin.active);
+  const previousInputValues = inputTerminals.sort((a, b) => a.pos.y - b.pos.y).map((terminal) => terminal.pin.active);
 
   for (let i = 0; i < combinationAmount; i++) {
     const combination = [];

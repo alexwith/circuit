@@ -15,6 +15,7 @@ export default function TruthTable() {
       return entities
         .filter((entity) => entity instanceof TerminalEntity)
         .filter((terminal) => terminal.flow === flow)
+        .sort((a, b) => a.pos.y - b.pos.y)
         .map((terminal, i) => (
           <th className="px-1 border-1 border-light dark:border-light-dark font-medium" key={i}>
             {terminal.name}

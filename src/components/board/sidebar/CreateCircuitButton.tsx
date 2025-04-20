@@ -35,6 +35,8 @@ export default function CreateCircuitButton() {
   };
 
   const handleCreateClick = () => {
+    computeTruthTable();
+
     const { entities, truthTable, gateTypes } = useCanvasStore.getState();
 
     const terminals: TerminalEntity[] = entities.filter(
