@@ -84,7 +84,7 @@ export default function LogicComponents() {
                 name="In Terminal Group"
                 displayElement={
                   <div className="flex flex-col gap-2">
-                    {[...Array(groupSize)].map((i) => (
+                    {[...Array(groupSize)].map((_, i) => (
                       <Terminal key={i} flow={Flow.In} />
                     ))}
                   </div>
@@ -96,7 +96,7 @@ export default function LogicComponents() {
                 name="Out Terminal Group"
                 displayElement={
                   <div className="flex flex-col gap-2">
-                    {[...Array(groupSize)].map((i) => (
+                    {[...Array(groupSize)].map((_, i) => (
                       <Terminal key={i} flow={Flow.Out} />
                     ))}
                   </div>

@@ -32,6 +32,8 @@ Circuit file format
     string - name
     2 bytes - x position
     2 bytes - y position
+    2 bytes - group size
+      2 bytes - terminal index
 
 2 bytes - wires size
     2 byte - pin0 parent index
@@ -114,7 +116,7 @@ export function deserialize(data: ArrayBuffer): [GateTypeEntity[], CanvasEntity[
 function serializeEntities(
   buffer: OffsetBuffer,
   gateTypes: GateTypeEntity[],
-  entities: CanvasEntity[],
+  entities: CanvasEntity[]
 ) {
   groupByEntityType(entities, (terminals, wires, gates) => {
     const processedEntities: CanvasEntity[] = [];
@@ -133,6 +135,12 @@ function serializeEntities(
       buffer.writeString(terminal.name);
       buffer.writeUInt16(terminal.pos.x);
       buffer.writeUInt16(terminal.pos.y);
+
+      buffer.writeUInt16(terminal.group.length);
+      for (const relatedTerminal of terminal.group) {
+        buffer.writeUInt16(entities.indexOf(relatedTerminal));
+      }
+
       processedEntities.push(terminal);
     }
 
@@ -168,12 +176,28 @@ function deserializeEntities(buffer: OffsetBuffer, gateTypes: GateTypeEntity[]):
   }
 
   const terminalsSize = buffer.readUInt16();
+  const terminalGroups = new Map<number, number[]>();
   for (let i = 0; i < terminalsSize; i++) {
     const flow = buffer.readUInt8();
     const name = buffer.readString();
     const pos = { x: buffer.readUInt16(), y: buffer.readUInt16() };
+
+    const groupIndexes = [];
+    const groupSize = buffer.readUInt16();
+    for (let j = 0; j < groupSize; j++) {
+      groupIndexes.push(buffer.readUInt16());
+    }
+    terminalGroups.set(entities.length, groupIndexes); // entities.length will be the current index
+
     entities.push(new TerminalEntity(pos, flow, [], name));
   }
+
+  terminalGroups.forEach((terminalGroup, terminalIndex) => {
+    const terminal = entities[terminalIndex] as TerminalEntity;
+    for (const relatedIndex of terminalGroup) {
+      terminal.group.push(entities[relatedIndex] as TerminalEntity);
+    }
+  });
 
   const wiresSize = buffer.readUInt16();
   for (let i = 0; i < wiresSize; i++) {
