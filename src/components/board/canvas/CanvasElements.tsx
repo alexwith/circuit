@@ -8,7 +8,7 @@ import { TerminalEntity } from "../../../entities/canvas/TerminalEntity";
 import { PinEntity } from "../../../entities/canvas/PinEntity";
 import { WireEntity } from "../../../entities/canvas/WireEntity";
 import Wire from "../elements/Wire";
-import { Flow, Pos } from "../../../common/types";
+import { Pos } from "../../../common/types";
 import Gate from "../elements/Gate";
 import { GateEntity } from "../../../entities/canvas/GateEntity";
 import { dispatchElementChange } from "../../../libs/canvasElementChangeEvent";

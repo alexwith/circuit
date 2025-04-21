@@ -13,6 +13,8 @@ type Props = {
 export default function DraggableLogic({ type, metadata, name, displayElement }: Props) {
   const [dragImage, setDragImage] = useState<HTMLDivElement | null>(null);
 
+  const zoom = useCanvasStore((state) => state.zoom);
+
   const setComponentDrag = useCanvasStore((actions) => actions.setComponentDrag);
 
   const handleDragStart = (event: DragEvent) => {
@@ -39,16 +41,22 @@ export default function DraggableLogic({ type, metadata, name, displayElement }:
     const dragImage = document.createElement("div");
     dragImage.style.top = "-1000px";
     dragImage.style.left = "-1000px";
-    dragImage.style.position = "fixed";
+    dragImage.style.position = "fixed";    
     document.body.appendChild(dragImage);
 
-    const root = ReactDOM.createRoot(dragImage);
-    root.render(displayElement);
+    const zoomedDisplayElement = (
+      <div className="absolute origin-center" style={{ transform: `scale(${zoom})`}}>
+        {displayElement}
+      </div>
+    );
+
+    const root = ReactDOM.createRoot(dragImage);    
+    root.render(zoomedDisplayElement);    
 
     setDragImage(dragImage);
 
     return () => dragImage.remove();
-  }, [displayElement]);
+  }, [displayElement, zoom]);
 
   return (
     <div
