@@ -169,7 +169,7 @@ export default function CanvasElements({ canvasRef }: Props) {
 
         const terminal = entity as TerminalEntity;
         const group = terminal.group;
-        if (group.length <= 1 || group.indexOf(terminal) == 0) {
+        if (group.length <= 1 || group.indexOf(terminal) != 0) {
           return;
         }
 
