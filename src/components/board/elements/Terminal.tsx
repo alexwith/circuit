@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { TERMINAL_PIN_OFFSET } from "../../../common/canvasConfig";
 import { Flow } from "../../../common/types";
 import { PinEntity } from "../../../entities/canvas/PinEntity";
@@ -15,8 +14,6 @@ type Props = {
 };
 
 export default function Terminal({ flow, entity, onPinClick }: Props) {
-  const [active, setActive] = useState<boolean>(false);
-
   const simulate = useCanvasStore((actions) => actions.simulate);
   const computeTruthTable = useCanvasStore((actions) => actions.computeTruthTable);
 
@@ -34,8 +31,7 @@ export default function Terminal({ flow, entity, onPinClick }: Props) {
       return;
     }
 
-    entity.pin.active = !active;
-    setActive(!active);
+    entity.pin.active = !entity.pin.active;
     simulate();
   };
 
@@ -55,7 +51,7 @@ export default function Terminal({ flow, entity, onPinClick }: Props) {
         className="absolute z-10 border-4 border-dark-light dark:border-light-dark bg-darkest-light dark:bg-dark w-8 h-8 rounded-full hover:border-violet-500"
         style={{
           left: `${flow === Flow.In ? 0 : 44}px`,
-          background: active ? "var(--color-red-500)" : "",
+          background: entity?.pin.active ? "var(--color-red-500)" : "",
         }}
         onClick={handleTerminalClick}
       />
