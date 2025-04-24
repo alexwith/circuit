@@ -69,6 +69,7 @@ export default function WiringWire({ canvasRef, startPos, points, setPoints, onC
   return (
     <>
       <CanvasElement
+        entity={undefined}
         pos={startPos}
         zIndex={-10}
         element={<Wire points={[startPos, ...points, cursorPos]} />}

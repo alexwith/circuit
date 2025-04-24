@@ -25,6 +25,7 @@ type Actions = {
   setEntities: (entities: CanvasEntity[]) => void;
   setGateTypes: (gateTypes: GateTypeEntity[]) => void;
   addEntity: (entity: CanvasEntity) => void;
+  removeEntity: (entity: CanvasEntity) => void;
   addGateType: (gateType: GateTypeEntity) => void;
   setComponentDrag: (componentDrag: ComponentDrag | null) => void;
   setBackgroundDots: (enabled: boolean) => void;
@@ -80,6 +81,20 @@ export const useCanvasStore = create<State & Actions>((set) => ({
     set((state) => {
       return {
         entities: [...state.entities, entity],
+      };
+    }),
+  removeEntity: (entity: CanvasEntity) =>
+    set((state) => {      
+      const entityIndex = state.entities.indexOf(entity);      
+      if (entityIndex == -1) {
+        return {};
+      }
+
+      const updatedEntities = [...state.entities]
+      updatedEntities.splice(entityIndex, 1);
+
+      return {
+        entities: updatedEntities,
       };
     }),
   addGateType: (gateType: GateTypeEntity) =>

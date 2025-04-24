@@ -62,17 +62,6 @@ export default function CanvasElements({ canvasRef }: Props) {
         }));
       }
 
-      /*let currentPos = draggingEntity.getPos();
-      const newPos = {
-        x: currentPos.x + event.movementX / zoom,
-        y: currentPos.y + event.movementY / zoom,
-      };
-      currentPos = newPos;
-
-      draggingEntity!.updatePos(() => ({
-        x: newPos.x,
-        y: newPos.y,
-      }));*/
       // trigger a rerender of the canvas
       updatePos((prev) => ({ x: prev.x, y: prev.y }));
     };
@@ -138,11 +127,13 @@ export default function CanvasElements({ canvasRef }: Props) {
   return (
     <>
       {entities.map((entity, key) => {
+
         const element = createElement(entity);
         return (
           element && (
             <CanvasElement
               key={key}
+              entity={entity}   
               pos={entity.getPos()}
               zIndex={entity.getZIndex()}
               element={element}
