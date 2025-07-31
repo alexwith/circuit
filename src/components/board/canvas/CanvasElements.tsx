@@ -44,11 +44,11 @@ export default function CanvasElements({ canvasRef }: Props) {
 
     const handleMouseMove = (event: MouseEvent) => {
       let entities = [draggingEntity];
-      if (draggingEntity instanceof TerminalEntity) {
+      if (draggingEntity instanceof TerminalEntity) {        
         entities = (draggingEntity as TerminalEntity).group;
       }
 
-      for (let entity of entities) {
+      for (let entity of entities) {        
         let currentPos = entity.getPos();
         const newPos = {
           x: currentPos.x + event.movementX / zoom,
@@ -81,7 +81,7 @@ export default function CanvasElements({ canvasRef }: Props) {
         setIsWiring(false);
 
         wiringPoints.pop(); // pop last element of wiring points as this will just be the pin
-        addEntity(new WireEntity(wiringStartPin!, pin, wiringPoints));
+        addEntity(new WireEntity(wiringStartPin!, pin, wiringPoints, []));
         computeTruthTable();
         simulate();
       } else {
@@ -98,7 +98,7 @@ export default function CanvasElements({ canvasRef }: Props) {
     if (entity instanceof WireEntity) {
       return;
     }
-
+    
     setDraggingEntity(entity);
     dispatchElementChange();
   };
@@ -116,7 +116,12 @@ export default function CanvasElements({ canvasRef }: Props) {
       case entity instanceof WireEntity: {
         const wire = entity as WireEntity;
         return (
-          <Wire entity={wire} points={[wire.pin0.getPos(), ...wire.points, wire.pin1.getPos()]} />
+          <Wire
+            canvasRef={canvasRef}
+            entity={wire}
+            points={[wire.pin0.getPos(), ...wire.points, wire.pin1.getPos()]}
+            onNewPinClick={handlePinClick}
+          />
         );
       }
       default:
@@ -127,13 +132,12 @@ export default function CanvasElements({ canvasRef }: Props) {
   return (
     <>
       {entities.map((entity, key) => {
-
         const element = createElement(entity);
         return (
           element && (
             <CanvasElement
               key={key}
-              entity={entity}   
+              entity={entity}
               pos={entity.getPos()}
               zIndex={entity.getZIndex()}
               element={element}

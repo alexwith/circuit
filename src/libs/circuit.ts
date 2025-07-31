@@ -1,19 +1,17 @@
 import { GateEntity } from "../entities/canvas/GateEntity";
-import { TerminalEntity } from "../entities/canvas/TerminalEntity";
 import { WireEntity } from "../entities/canvas/WireEntity";
 
-export function executeCircuit(
-  terminals: TerminalEntity[],
+export function executeCircuit(  
   wires: WireEntity[],
-  gates: GateEntity[],
+  gates: GateEntity[]
 ) {
-  for (let i = 0; i < gates.length; i++) {
+  for (let i = 0; i < gates.length + 1; i++) {
     wires.forEach((wire) => {
       wire.execute();
     });
 
     gates.forEach((gate) => {
-      gate.execute();
+      gate.execute();      
 
       wires.forEach((wire) => {
         wire.execute();

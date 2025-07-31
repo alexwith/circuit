@@ -20,7 +20,7 @@ export default function useContextMenu(): ContextMenuData {
 
     document.addEventListener("click", handleClick);
     return () => document.removeEventListener("click", handleClick);
-  }, [show]);
+  }, []);
 
   return { handleContextMenu, showContextMenu: show };
 }

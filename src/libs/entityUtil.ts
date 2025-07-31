@@ -1,3 +1,4 @@
+import { EntityType, Flow } from "../common/types";
 import { CanvasEntity } from "../entities/canvas/CanvasEntity";
 import { GateEntity } from "../entities/canvas/GateEntity";
 import { TerminalEntity } from "../entities/canvas/TerminalEntity";
@@ -18,4 +19,16 @@ export function groupByEntityType<T>(
     .map((entity) => entity as GateEntity);
 
   return consume(terminals, wires, gates);
+}
+
+export function getEntityType(entity: CanvasEntity): EntityType | null {
+  if (entity instanceof GateEntity) {
+    return EntityType.Gate;
+  } else if (entity instanceof WireEntity) {
+    return EntityType.Wire;
+  } else if (entity instanceof TerminalEntity) {
+    return entity.flow == Flow.In ? EntityType.InTerminal : EntityType.OutTerminal;
+  }
+
+  return null;
 }

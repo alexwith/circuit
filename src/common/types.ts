@@ -18,4 +18,5 @@ export enum EntityType {
   OutTerminal,
   InTerminal,
   Gate,
+  Wire
 }

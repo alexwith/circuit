@@ -12,10 +12,6 @@ type Props = {
 };
 
 export default function CanvasElementContextMenu({ show, entity }: Props) {
-  if (!show) {
-    return;
-  }
-
   const entities = useCanvasStore((state) => state.entities);
 
   const removeEntity = useCanvasStore((actions) => actions.removeEntity);
@@ -49,6 +45,10 @@ export default function CanvasElementContextMenu({ show, entity }: Props) {
 
     removeEntity(entity);
   }, [entity]);
+
+  if (!show) {
+    return null;
+  }
 
   let name;
   if (entity instanceof GateEntity) {

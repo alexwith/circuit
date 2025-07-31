@@ -8,7 +8,7 @@ export function computeTruthTable(
   terminals: TerminalEntity[],
   wires: WireEntity[],
   gates: GateEntity[]
-): boolean[][] {  
+): boolean[][] {    
   const truthTable: boolean[][] = [];
 
   const inputTerminals = terminals.filter((pin) => pin.flow === Flow.In).sort((a, b) => a.pos.y - b.pos.y);  
@@ -27,7 +27,7 @@ export function computeTruthTable(
       inputTerminals[i].pin.active = combination[i];
     }
 
-    executeCircuit(terminals, wires, gates);
+    executeCircuit(wires, gates);
 
     const outputValues = outputTerminals.map((terminal) => terminal.pin.active);
 
@@ -37,7 +37,7 @@ export function computeTruthTable(
   inputTerminals.forEach((terminal, i) => {
     terminal.pin.active = previousInputValues[i];
   });
-  executeCircuit(terminals, wires, gates);
+  executeCircuit(wires, gates);
 
   return truthTable;
 }
