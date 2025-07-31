@@ -7,7 +7,6 @@ import { basicCircuits } from "../common/basicGates";
 import { executeCircuit } from "../libs/circuit";
 import { groupByEntityType } from "../libs/entityUtil";
 import { computeTruthTable } from "../libs/truthTable";
-import { WireEntity } from "../entities/canvas/WireEntity";
 
 type State = {
   pos: Pos;

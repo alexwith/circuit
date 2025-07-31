@@ -72,7 +72,7 @@ export default function WiringWire({ canvasRef, startPos, points, setPoints, onC
         entity={undefined}
         pos={startPos}
         zIndex={-10}
-        element={<Wire points={[startPos, ...points, cursorPos]} />}
+        element={<Wire canvasRef={canvasRef} points={[startPos, ...points, cursorPos]} onNewPinClick={() => {}} />}
       />
       <h1
         className="absolute text-dark dark:text-light text-sm font-medium rounded-sm px-1 bg-light dark:bg-dark border-1 border-dark-light dark:border-light-dark"
