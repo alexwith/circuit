@@ -9,10 +9,11 @@ type Props = {
   canvasRef: RefObject<SVGSVGElement | null>;
   entity?: WireEntity;
   points: Pos[];
+  isComplete: boolean;
   onNewPinClick: (pin: PinEntity) => void;
 };
 
-export default function Wire({ canvasRef, entity, points, onNewPinClick }: Props) {
+export default function Wire({ canvasRef, entity, points, isComplete, onNewPinClick }: Props) {
   const canvasPos = useCanvasStore((state) => state.pos);
   const zoom = useCanvasStore((state) => state.zoom);
 
@@ -56,11 +57,12 @@ export default function Wire({ canvasRef, entity, points, onNewPinClick }: Props
   return (
     <svg className="overflow-visible w-[1px] h-[1px]">
       <path
-        className="stroke-4 stroke-dark-light dark:stroke-light-dark hover:stroke-6"
+        className="stroke-4 stroke-dark-light dark:stroke-light-dark hover:stroke-7"
         fill="none"
         d={path}
         style={{        
           stroke: entity?.isActive() ? "var(--color-red-500)" : "",
+          pointerEvents: isComplete ? "auto" : "none"
         }}
         onClick={handleWireClick}
       />

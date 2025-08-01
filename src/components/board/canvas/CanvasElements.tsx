@@ -120,6 +120,7 @@ export default function CanvasElements({ canvasRef }: Props) {
             canvasRef={canvasRef}
             entity={wire}
             points={[wire.pin0.getPos(), ...wire.points, wire.pin1.getPos()]}
+            isComplete={true}
             onNewPinClick={handlePinClick}
           />
         );
