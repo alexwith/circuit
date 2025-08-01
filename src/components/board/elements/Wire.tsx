@@ -1,9 +1,9 @@
 import { MouseEvent, RefObject, useMemo } from "react";
 import { Flow, Pos } from "../../../common/types";
-import { roundCommands, SVGCommand } from "svg-round-corners";
 import { WireEntity } from "../../../entities/canvas/WireEntity";
 import { PinEntity } from "../../../entities/canvas/PinEntity";
 import { useCanvasStore } from "../../../store/canvasStore";
+import { smoothSVGPath } from "../../../libs/pathUtil";
 
 type Props = {
   canvasRef: RefObject<SVGSVGElement | null>;
@@ -18,24 +18,7 @@ export default function Wire({ canvasRef, entity, points, isComplete, onNewPinCl
   const zoom = useCanvasStore((state) => state.zoom);
 
   const path = useMemo(() => {
-    const pathCommands: SVGCommand[] = [];
-
-    const startPoint = points[0];
-    points.forEach((point, i) => {
-      const offsetPoint = {
-        x: point.x - startPoint.x,
-        y: point.y - startPoint.y,
-      };
-
-      if (i === 0) {
-        pathCommands.push({ marker: "M", values: offsetPoint });
-        return;
-      }
-
-      pathCommands.push({ marker: "L", values: offsetPoint });
-    });
-
-    return roundCommands(pathCommands, 0).path;
+    return smoothSVGPath(points, 7);
   }, [points]);
 
   const handleWireClick = (event: MouseEvent) => {
