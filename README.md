@@ -5,7 +5,9 @@
 ---
 
 ## The Project
-Circuit is a web app to build and simulate simple logic circuits. It's a tool to learn more about how computers work. The app can be found at [circuit.alexwith.com](https://circuit.alexwith.com/)
+Circuit is a web app that lets you build and test simple logic circuits right in your browser. It's a fun tool to explore how computers work under the hood. You can check the app out at [circuit.alexwith.com](https://circuit.alexwith.com/). 
+
+This is an improved version of my earlier project, [Logic Gates](https://github.com/alexwith/logic-gates), with lots of improvements like an infinite canvas, zooming, better performance, support for more complex circuits, and lots of other smaller tweaks that makes it a better experience.
 
 ## License
 Circuit is free and open source software. The software is released under the terms of the [GPL-3.0 license](https://github.com/alexwith/circuit/blob/main/LICENSE).
