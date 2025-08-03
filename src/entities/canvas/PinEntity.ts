@@ -1,6 +1,6 @@
 import { GATE_PIN_OFFSET, PIN_SIZE, TERMINAL_PIN_OFFSET } from "../../common/canvasConfig";
 import { Flow, Pos } from "../../common/types";
-import { closestPosOnLine, distancePosToLineSq } from "../../libs/posUtil";
+import { closestPosOnLine } from "../../libs/posUtil";
 import { CanvasEntity } from "./CanvasEntity";
 import { GateEntity } from "./GateEntity";
 import { TerminalEntity } from "./TerminalEntity";
@@ -28,11 +28,11 @@ export class PinEntity {
 
   getPos(): Pos {
     if (!this.parent) {
-      return { x: 0, y: 0};
+      return { x: 0, y: 0 };
     }
 
     const { x: parentX, y: parentY } = this.parent.getPos();
-    
+
     switch (true) {
       case this.parent instanceof TerminalEntity: {
         const pinOffset = TERMINAL_PIN_OFFSET(this.flow);
@@ -49,24 +49,35 @@ export class PinEntity {
         };
       }
       // If this pins parent is a wire and is connected to another wire, we try to glue it to the other wire
-      case this.parent instanceof WireEntity && this.pos != undefined: {                
-        const points = [this.parent.pin0.getPos(), ...this.parent.points, this.parent.pin1.getPos()];
-        let currentPos = null;
+      case this.parent instanceof WireEntity && this.pos != undefined: {
+        const points = [
+          this.parent.pin0.getPos(),
+          ...this.parent.points,
+          this.parent.pin1.getPos(),
+        ];
+        let closestPoint = null;
+        let minDistSq = Infinity;
+
         for (let i = 0; i < points.length - 1; i++) {
           const a = points[i];
           const b = points[i + 1];
-          
-          const distance = distancePosToLineSq(a, b, this.pos);
-          if (distance < 1) {
+
+          const candidatePoint = closestPosOnLine(a, b, this.pos);
+          const dx = candidatePoint.x - this.pos.x;
+          const dy = candidatePoint.y - this.pos.y;
+          const distanceSq = dx * dx + dy * dy;
+
+          if (distanceSq < 1) {
             return this.pos;
           }
 
-          if (currentPos == null || distance < distancePosToLineSq(a, b, currentPos)) {
-              currentPos = closestPosOnLine(a, b, this.pos);
+          if (distanceSq < minDistSq) {
+            minDistSq = distanceSq;
+            closestPoint = candidatePoint;
           }
-        }        
+        }
 
-        this.pos = currentPos!!;
+        this.pos = closestPoint!!;
         return this.pos;
       }
       default:
