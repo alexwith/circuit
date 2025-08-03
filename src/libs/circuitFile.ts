@@ -156,8 +156,8 @@ function serializeEntities(
       }
     }
 
-    buffer.writeUInt16(wires.length);
-    for (const wire of wires) {
+    buffer.writeUInt16(wires.length);    
+    for (const wire of wires) {      
       const parent0 = wire.pin0.parent;
       const parent0Type = getEntityType(parent0!)!;
       buffer.writeUInt8(parent0Type);

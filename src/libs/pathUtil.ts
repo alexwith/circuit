@@ -24,14 +24,14 @@ export function smoothSVGPath(points: Pos[], radius: number): string {
     const vecIn = { x: point.x - previous.x, y: point.y - previous.y };
     const vecOut = { x: next.x - point.x, y: next.y - point.y };
 
-    const lenIn = Math.hypot(vecIn.x, vecIn.y);
-    const lenOut = Math.hypot(vecOut.x, vecOut.y);
+    const lenIn = Math.max(Math.hypot(vecIn.x, vecIn.y), 1);
+    const lenOut = Math.max(Math.hypot(vecOut.x, vecOut.y), 1);
     const r = Math.min(radius, lenIn / 2, lenOut / 2);
 
     const startCorner = {
       x: point.x - (vecIn.x / lenIn) * r,
       y: point.y - (vecIn.y / lenIn) * r,
-    };
+    };    
 
     const endCorner = {
       x: point.x + (vecOut.x / lenOut) * r,
@@ -42,7 +42,7 @@ export function smoothSVGPath(points: Pos[], radius: number): string {
       x: startCorner.x - start.x,
       y: startCorner.y - start.y,
     };
-
+      
     const relEnd = {
       x: endCorner.x - start.x,
       y: endCorner.y - start.y,
@@ -54,7 +54,7 @@ export function smoothSVGPath(points: Pos[], radius: number): string {
     };
 
     path += ` L ${relStart.x},${relStart.y}`;
-    path += ` Q ${relCorner.x},${relCorner.y} ${relEnd.x},${relEnd.y}`;
+    path += ` Q ${relCorner.x},${relCorner.y} ${relEnd.x},${relEnd.y}`;    
   }
 
   return path;

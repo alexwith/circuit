@@ -25,10 +25,11 @@ export default function CanvasElementContextMenu({ show, entity }: Props) {
       }
       if (entity instanceof TerminalEntity) {
         pins.push(entity.pin);
+        console.log(entity.pin)
       }
 
       for (const otherEntity of entities) {
-        if (otherEntity instanceof WireEntity) {
+        if (otherEntity instanceof WireEntity) {          
           if (pins.includes(otherEntity.pin0) || pins.includes(otherEntity.pin1)) {
             removeEntity(otherEntity);
           }
@@ -44,7 +45,7 @@ export default function CanvasElementContextMenu({ show, entity }: Props) {
     }
 
     removeEntity(entity);
-  }, [entity]);
+  }, [entity, entities]);
 
   if (!show) {
     return null;
