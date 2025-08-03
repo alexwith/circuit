@@ -37,7 +37,7 @@ export default function ExportMenu({ onClose }: Props) {
 
     const { gateTypes, entities } = useCanvasStore.getState();
 
-    const data = serialize(gateTypes, entities);
+    const data = new Uint8Array(serialize(gateTypes, entities));
     const fileURL = window.URL.createObjectURL(new Blob([data], { type: "text/plain" }));
 
     const downloadElement = document.createElement("a");

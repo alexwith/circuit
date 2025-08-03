@@ -57,7 +57,7 @@ export default function Header() {
       </h1>
       <div className="flex font-medium gap-5 text-sm text-darkest dark:text-lightest">
         <div className="hidden sm:block">
-          <input className="hidden" type="file" id="import-button" onChange={handleImport} />
+          <input className="hidden" type="file" accept=".circuit" id="import-button" onChange={handleImport} />
           <label className="hover:text-violet-400 hover:cursor-pointer" htmlFor="import-button">
             Import
           </label>
