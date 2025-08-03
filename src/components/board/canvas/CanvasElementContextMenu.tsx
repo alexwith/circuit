@@ -24,8 +24,7 @@ export default function CanvasElementContextMenu({ show, entity }: Props) {
         pins.push(...entity.outputs);
       }
       if (entity instanceof TerminalEntity) {
-        pins.push(entity.pin);
-        console.log(entity.pin)
+        pins.push(entity.pin);        
       }
 
       for (const otherEntity of entities) {

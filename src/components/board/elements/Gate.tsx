@@ -33,14 +33,14 @@ export default function Gate({ gateType, entity, onPinClick }: Props) {
       >
         {gateType.icon || (
           <rect
-            className="fill-violet-500"
+            className="fill-violet-400 dark:fill-violet-500"
             width={gateType.width}
             height={gateType.height}
             rx="5"
           />
         )}
         <text
-          className="fill-indigo-950 select-none"
+          className="fill-indigo-800 dark:fill-indigo-950 select-none"
           x={gateType.width / 2 + gateType.nameOffset.x}
           y={gateType.height / 2 + gateType.nameOffset.y}
           dominantBaseline="middle"

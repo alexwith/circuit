@@ -109,10 +109,10 @@ export default function CreateCircuitButton() {
               onChange={(event) => setName(event.currentTarget.value)}
             />
             <div
-              className="w-fit ml-auto bg-light-dark px-3 py-1 rounded-md border-1 border-transparent hover:cursor-pointer hover:border-violet-400"
+              className="w-fit ml-auto bg-light dark:bg-light-dark px-3 py-1 rounded-md border-1 border-transparent hover:cursor-pointer hover:border-violet-400"
               onClick={handleCreateClick}
             >
-              <h1 className="text-sm text-lightest">Create</h1>
+              <h1 className="text-sm font-medium text-light-dark dark:text-lightest">Create</h1>
             </div>
           </div>
         </div>

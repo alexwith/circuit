@@ -54,6 +54,10 @@ input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     height: 13px;
     width: 13px;
-    background: var(--color-lightest-dark);
+    background: var(--color-dark-light);
     border-radius: 100%;
+}
+
+.dark input[type=range]::-webkit-slider-thumb {
+    background: var(--color-lightest-dark);
 }

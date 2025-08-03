@@ -69,7 +69,7 @@ export default function LogicComponents() {
               <div className="flex flex-col gap-1 my-1">
                 <p className="text-violet-400 font-medium text-xs">Group Size: {groupSize}</p>
                 <input
-                  className="appearance-none bg-light-dark h-2 rounded-full range-sm"
+                  className="appearance-none bg-light dark:bg-light-dark h-2 rounded-full range-sm"
                   type="range"
                   min="2"
                   max="16"

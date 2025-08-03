@@ -68,10 +68,10 @@ export default function ExportMenu({ onClose }: Props) {
         />
 
         <div
-          className="bg-light-dark ml-auto px-3 py-1 rounded-md border-1 border-transparent hover:cursor-pointer hover:border-violet-400"
+          className="bg-light dark:bg-light-dark ml-auto px-3 py-1 rounded-md border-1 border-transparent hover:cursor-pointer hover:border-violet-400"
           onClick={handleExportClick}
         >
-          <h1 className="text-sm text-lightest">Export as circuit</h1>
+          <h1 className="text-sm text-light-dark dark:text-lightest">Export as circuit</h1>
         </div>
       </div>
     </div>
