@@ -1,3 +1,8 @@
+<a href="https://circuit.alexwith.com">
+    <p align="center">
+        <img height=100 src="./assets/logo.png"/>
+    </p>
+</a>
 <p align="center">
   <strong>Build and simulate circuits using logic gates</strong>
 </p>
