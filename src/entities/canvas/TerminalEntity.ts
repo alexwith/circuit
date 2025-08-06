@@ -30,4 +30,8 @@ export class TerminalEntity extends CanvasEntity {
   getZIndex(): number {
     return 0;
   }
+
+  execute(): boolean {
+    return false;
+  }
 }

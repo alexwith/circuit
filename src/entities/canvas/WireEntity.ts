@@ -32,7 +32,10 @@ export class WireEntity extends CanvasEntity {
     return this.pin0.active || this.pin1.active;
   }
 
-  execute() {    
+  execute(): boolean {
+    const prev0 = this.pin0.active;
+    const prev1 = this.pin1.active;
+
     if (this.pin0.parent instanceof TerminalEntity) {
       if (this.pin0.flow === Flow.In) {
         this.pin1.active = this.pin0.active;
@@ -44,7 +47,7 @@ export class WireEntity extends CanvasEntity {
         this.pin0.active = this.pin1.active;
       } else {
         this.pin1.active = this.pin0.active;
-      }    
+      }
     } else if (this.pin0.parent instanceof WireEntity) {
       this.pin0.active = this.pin0.parent.isActive();
       this.pin1.active = this.pin0.active;
@@ -55,13 +58,16 @@ export class WireEntity extends CanvasEntity {
       this.pin1.active = this.pin0.active;
     } else if (this.pin0.flow === Flow.In && this.pin1.flow === Flow.Out) {
       this.pin0.active = this.pin1.active;
-    } else {      
+    } else {
       this.pin0.active = this.isActive();
       this.pin1.active = this.pin0.active;
     }
 
-    for (const childPin of this.childPins) {      
-      childPin.active = this.isActive();      
+    const active = this.isActive();
+    for (const child of this.childPins) {
+      child.active = active;
     }
+
+    return this.pin0.active !== prev0 || this.pin1.active !== prev1;
   }
 }

@@ -30,34 +30,21 @@ export class GateEntity extends CanvasEntity {
     return 0;
   }
 
-  execute() {
-    let inputValues = "";
-    for (const pin of this.inputs) {
-      inputValues += pin.active ? "1" : "0";
-    }
+  execute(): boolean {
+    let inputValues = this.inputs.map((pin) => (pin.active ? "1" : "0")).join("");
 
-    let outputValues: boolean[] = [];
-    for (const inputValuation in this.type.truthTable) {
-      if (inputValuation !== inputValues) {
-        continue;
+    const output = this.type.truthTable[inputValues] || "0".repeat(this.type.outputs);
+    let changed = false;
+
+    for (let i = 0; i < output.length; i++) {
+      const active = output.charAt(i) === "1";
+      if (this.outputs[i].active !== active) {
+        this.outputs[i].active = active;
+        changed = true;
       }
-
-      const outputValuation = this.type.truthTable[inputValuation];
-      for (let i = 0; i < outputValuation.length; i++) {
-        const active = outputValuation.charAt(i) === "1";
-        outputValues.push(active);
-      }
-      break;
     }
 
-    if (outputValues.length === 0) {
-      outputValues = Array(this.type.outputs).fill(false, 0, this.type.outputs);
-    }
-
-    for (let i = 0; i < outputValues.length; i++) {
-      const outputPin = this.outputs[i];
-      outputPin.active = outputValues[i];
-    }
+    return changed;
   }
 
   private createPins(flow: Flow): PinEntity[] {

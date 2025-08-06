@@ -84,4 +84,8 @@ export class PinEntity {
         return { x: 0, y: 0 };
     }
   }
+
+  execute(): boolean {
+    return false;
+  }
 }

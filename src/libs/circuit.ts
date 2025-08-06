@@ -1,21 +1,31 @@
 import { GateEntity } from "../entities/canvas/GateEntity";
 import { WireEntity } from "../entities/canvas/WireEntity";
 
-export function executeCircuit(  
-  wires: WireEntity[],
-  gates: GateEntity[]
-) {
-  for (let i = 0; i < gates.length + 1; i++) {
-    wires.forEach((wire) => {
-      wire.execute();
-    });
+const MAX_ITERATIONS = 10000;
 
-    gates.forEach((gate) => {
-      gate.execute();      
+export function executeCircuit(wires: WireEntity[], gates: GateEntity[]) {
+  let changed = true;
+  let iterations = 0;
 
-      wires.forEach((wire) => {
-        wire.execute();
-      });
-    });
+  while (changed && iterations++ < MAX_ITERATIONS) {
+    changed = false;
+
+    for (const wire of wires) {
+      const wireChanged = wire.execute();
+      if (wireChanged) {
+        changed = true;
+      }
+    }
+
+    for (const gate of gates) {
+      const gateChanged = gate.execute();
+      if (gateChanged) {
+        changed = true;
+      }
+    }
+  }
+
+  if (iterations >= MAX_ITERATIONS) {
+    console.warn("Circuit simulation reached max iterations");
   }
 }

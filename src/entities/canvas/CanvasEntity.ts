@@ -6,4 +6,6 @@ export abstract class CanvasEntity {
   abstract updatePos(modifier: (prev: Pos) => Pos): void;
 
   abstract getZIndex(): number;
+
+  abstract execute(): boolean;
 }
