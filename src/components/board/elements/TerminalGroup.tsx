@@ -40,26 +40,26 @@ export default function TerminalGroup({ group }: Props) {
         {result}
       </h1>
       <div
-        className="absolute w-5 h-1 bg-light-dark"
+        className="absolute w-5 h-1 bg-darkest-light dark:bg-light-dark"
         style={{
           transform: `translate(${xOffset + endsXOffset}px, ${-6}px)`,
         }}
       />
       <div
-        className="absolute w-5 h-1 bg-light-dark"
+        className="absolute w-5 h-1 bg-darkest-light dark:bg-light-dark"
         style={{
           transform: `translate(${xOffset + endsXOffset}px, ${lastTerminal.pos.y - origin.y + 36}px)`,
         }}
       />     
       <div
-        className="absolute w-1 bg-light-dark"
+        className="absolute w-1 bg-darkest-light dark:bg-light-dark"
         style={{
           height: `${(lastTerminal.pos.y - origin.y + 36 + 6 + 6) / 2 - 20}px`,
           transform: `translate(${xOffset}px, ${-6}px)`,
         }}
       />
       <div
-        className="absolute w-1 bg-light-dark"
+        className="absolute w-1 bg-darkest-light dark:bg-light-dark"
         style={{
           height: `${(lastTerminal.pos.y - origin.y + 36 + 6 + 6) / 2 - 20}px`,
           transform: `translate(${xOffset}px, ${(lastTerminal.pos.y - origin.y + 36 + 6 + 6) / 2 + 10}px)`,
