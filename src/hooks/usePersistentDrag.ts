@@ -15,8 +15,8 @@ export function usePersistentDrag({ ref, updatePos, targetPredicate }: Props): R
   const [dragging, setDragging] = useState<boolean>(false);
 
   const handleMouseDown = useCallback(
-    (event: PointerEvent) => {
-      if (!targetPredicate(event.target)) {
+    (event: PointerEvent) => {                  
+      if (!targetPredicate(event.target) || event.button != 0) {
         return;
       }
 
