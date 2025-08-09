@@ -60,7 +60,7 @@ export default function CanvasElementContextMenu({ show, entity }: Props) {
   }
 
   return (
-    <div className="absolute bg-dark text-dark-light rounded-md flex flex-col overflow-hidden text-center p-2 border-1 border-violet-500 w-30">
+    <div className="absolute bg-dark text-dark-light rounded-md flex flex-col overflow-hidden text-center p-2 border-1 border-violet-500 w-30 left-20">
       <h1 className="font-bold text-center mb-2">{name}</h1>
       <div
         className="rounded-md font-medium w-full border-1 border-transparent bg-light-dark hover:border-violet-500 hover:cursor-pointer"
