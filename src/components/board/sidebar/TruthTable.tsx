@@ -44,7 +44,7 @@ export default function TruthTable() {
           <p className="text-sm text-darkest-light dark:text-dark-light font-medium">
             There is not enough information to generate a truth table
           </p>
-        ) : truthTable.length > 1000 ? (
+        ) : truthTable.length > 256 ? (
           <p className="text-sm text-darkest-light dark:text-dark-light font-medium">
             The truth table is too large to display
           </p>

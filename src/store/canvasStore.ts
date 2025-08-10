@@ -84,13 +84,13 @@ export const useCanvasStore = create<State & Actions>((set) => ({
       };
     }),
   removeEntity: (entity: CanvasEntity) =>
-    set((state) => {      
-      const entityIndex = state.entities.indexOf(entity);      
+    set((state) => {
+      const entityIndex = state.entities.indexOf(entity);
       if (entityIndex == -1) {
         return {};
       }
 
-      const updatedEntities = [...state.entities]
+      const updatedEntities = [...state.entities];
       updatedEntities.splice(entityIndex, 1);
 
       return {
@@ -110,11 +110,13 @@ export const useCanvasStore = create<State & Actions>((set) => ({
       backgroundDots: enabled,
     })),
   computeTruthTable: () => {
-    set((state) => ({
-      truthTable: groupByEntityType(state.entities, (terminals, wires, gates) => {
-        return computeTruthTable(terminals, wires, gates);
-      }),
-    }));
+    set((state) => {    
+      return {
+        truthTable: groupByEntityType(state.entities, (terminals, wires, gates) => {
+          return computeTruthTable(terminals, wires, gates);
+        }),
+      };
+    });
   },
   simulate: () => {
     set((state) => {

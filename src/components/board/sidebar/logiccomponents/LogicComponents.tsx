@@ -72,7 +72,7 @@ export default function LogicComponents() {
                   className="appearance-none bg-light dark:bg-light-dark h-2 rounded-full range-sm"
                   type="range"
                   min="2"
-                  max="16"
+                  max="8"
                   value={groupSize}            
                   onChange={(event) => {
                     setGroupSize(parseInt(event.target.value));
