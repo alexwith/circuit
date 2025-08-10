@@ -15,7 +15,7 @@ Circuit is a web app that lets you build and test simple logic circuits right in
 This is an improved version of my earlier project, [Logic Gates](https://github.com/alexwith/logic-gates), with lots of improvements like an infinite canvas, zooming, better performance, support for more complex circuits, and lots of other smaller tweaks that makes it a better experience.
 
 ## Preview
-### Full Adder
+### 4-Bit Adder
 https://github.com/user-attachments/assets/651e089a-3a76-4bee-b2e0-8cf175961652
 
 ### S-R Latch
