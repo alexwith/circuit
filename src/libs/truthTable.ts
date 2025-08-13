@@ -36,10 +36,10 @@ export function computeTruthTable(
   const combination = new Array(inputCount);
   const outputValues = new Array(outputCount);
 
-  for (let i = 0; i < combinationAmount; i++) {    
+  for (let i = 0; i < combinationAmount; i++) {        
     for (let j = 0; j < inputCount; j++) {
-      combination[j] = Boolean(i & (1 << j));
-      inputTerminals[j].pin.active = combination[i];
+      combination[j] = Boolean(i & (1 << j));      
+      inputTerminals[j].pin.active = combination[j];
     }
 
     executeCircuit(wires, gates);
