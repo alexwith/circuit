@@ -61,3 +61,11 @@ input[type=range]::-webkit-slider-thumb {
 .dark input[type=range]::-webkit-slider-thumb {
     background: var(--color-lightest-dark);
 }
+
+svg text {
+cursor: default;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}

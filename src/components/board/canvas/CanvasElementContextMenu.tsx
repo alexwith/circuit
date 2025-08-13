@@ -18,11 +18,10 @@ export default function CanvasElementContextMenu({ show, entity }: Props) {
 
   const removeEntity = useCanvasStore((actions) => actions.removeEntity);
   const computeTruthTable = useCanvasStore((actions) => actions.computeTruthTable);
-  
 
   const handleRenameClick = () => {
     if (entity instanceof TerminalEntity) {
-      const value = window.prompt("Rename terminal", entity.name) || "";
+      const value = window.prompt("Rename terminal", entity.name) || "?";
       entity.name = value.slice(0, 10);
       computeTruthTable();
       dispatchElementChange();
@@ -72,6 +71,8 @@ export default function CanvasElementContextMenu({ show, entity }: Props) {
     name = "Terminal";
   }
 
+  const canRename = entity instanceof TerminalEntity;
+
   return (
     <g transform={`translate(80, 0) scale(${1 / zoom})`}>
       <rect
@@ -80,7 +81,7 @@ export default function CanvasElementContextMenu({ show, entity }: Props) {
         y={0}
         rx={6}
         width={140}
-        height={100}
+        height={canRename ? 100 : 70}
         strokeWidth={1}
       />
       <text
@@ -94,7 +95,7 @@ export default function CanvasElementContextMenu({ show, entity }: Props) {
       </text>
       <g
         onClick={() => {
-          handleRenameClick();
+          handleDeleteClick();
         }}
         style={{ cursor: "pointer" as any }}
       >
@@ -113,33 +114,35 @@ export default function CanvasElementContextMenu({ show, entity }: Props) {
           textAnchor="middle"
           dominantBaseline="hanging"
         >
-          Rename
-        </text>
-      </g>
-      <g
-        onClick={() => {
-          handleDeleteClick();
-        }}
-        style={{ cursor: "pointer" as any }}
-      >
-        <rect
-          className="fill-light-dark hover:stroke-violet-500"
-          x={10}
-          y={64}
-          rx={4}
-          width={120}
-          height={25}
-        />
-        <text
-          className="font-medium fill-dark-light pointer-events-none"
-          x={70}
-          y={70}
-          textAnchor="middle"
-          dominantBaseline="hanging"
-        >
           Delete
         </text>
       </g>
+      {canRename && (
+        <g
+          onClick={() => {
+            handleRenameClick();
+          }}
+          style={{ cursor: "pointer" as any }}
+        >
+          <rect
+            className="fill-light-dark hover:stroke-violet-500"
+            x={10}
+            y={64}
+            rx={4}
+            width={120}
+            height={25}
+          />
+          <text
+            className="font-medium fill-dark-light pointer-events-none"
+            x={70}
+            y={70}
+            textAnchor="middle"
+            dominantBaseline="hanging"
+          >
+            Rename
+          </text>
+        </g>
+      )}
     </g>
   );
 }
