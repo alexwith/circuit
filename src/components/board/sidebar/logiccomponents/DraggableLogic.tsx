@@ -1,4 +1,4 @@
-import { DragEvent, ReactNode, useEffect, useState } from "react";
+import { DragEvent, ReactNode, useEffect } from "react";
 import { useCanvasStore } from "../../../../store/canvasStore";
 import { EntityType, Pos } from "../../../../common/types";
 
@@ -10,13 +10,13 @@ type Props = {
 };
 
 export default function DraggableLogic({ type, metadata, name, displayElement }: Props) {
-  const [dragImage, setDragImage] = useState<HTMLDivElement | null>(null);
+  //const [dragImage, setDragImage] = useState<HTMLDivElement | null>(null);
 
-  const zoom = useCanvasStore((state) => state.zoom);
+  //const zoom = useCanvasStore((state) => state.zoom);
 
   const setComponentDrag = useCanvasStore((actions) => actions.setComponentDrag);
 
-  const handleDragStart = (event: DragEvent) => {
+  const handleDragStart = (_: DragEvent) => {
     // if (!dragImage) {
     //   return;
     // }
@@ -43,13 +43,13 @@ export default function DraggableLogic({ type, metadata, name, displayElement }:
   with overflows as the drag image
   */
   useEffect(() => {
-    const dragImage = document.createElement("div");
-    dragImage.style.top = "-9999px";
-    dragImage.style.left = "-9999px";
-    dragImage.style.position = "fixed";
-    document.body.appendChild(dragImage);
+    // const dragImage = document.createElement("div");
+    // dragImage.style.top = "-9999px";
+    // dragImage.style.left = "-9999px";
+    // dragImage.style.position = "fixed";
+    // document.body.appendChild(dragImage);
 
-    setDragImage(dragImage);
+    // setDragImage(dragImage);
   }, [displayElement]);
 
   /*useEffect(() => {
