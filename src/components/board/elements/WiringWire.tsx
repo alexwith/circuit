@@ -74,14 +74,14 @@ export default function WiringWire({ canvasRef, startPos, points, setPoints, onC
         zIndex={-10}
         element={<Wire canvasRef={canvasRef} points={[startPos, ...points, cursorPos]} isComplete={false} onNewPinClick={() => {}} />}
       />
-      <h1
-        className="absolute text-dark dark:text-light text-sm font-medium rounded-sm px-1 bg-light dark:bg-dark border-1 border-dark-light dark:border-light-dark"
-        style={{
-          transform: `translate(${startPos.x - 80}px, ${startPos.y - 45}px)`,
-        }}
-      >
-        Press <span className="font-bold">Esc</span> to stop wiring
-      </h1>
+      <g transform={`translate(${startPos.x - 80}, ${startPos.y - 45})`}>
+        <rect className="fill-light dark:fill-dark stroke-dark-light dark:stroke-light-dark" x={-4} y={-16} width={180} height={26} rx={4} strokeWidth={1} />
+        <text className="fill-dark dark:fill-light text-sm" x={0} y={0} dominantBaseline="middle">
+          Press 
+          <tspan className="font-bold">Esc</tspan>
+          {" "}to stop wiring
+        </text>
+      </g>
     </>
   );
 }

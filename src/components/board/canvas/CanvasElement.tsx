@@ -13,24 +13,22 @@ type Props = {
 };
 
 export default function CanvasElement({ entity, pos, zIndex, element, onMouseDown }: Props) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<SVGGElement>(null);
   const { handleContextMenu, showContextMenu } = useContextMenu();
 
   return (
-    <div
+    <g
       ref={ref}
-      className="absolute cursor-auto"
-      onMouseDown={onMouseDown}
-      onContextMenu={handleContextMenu}
-      style={{
-        zIndex,
-        transform: `translate(${pos.x}px, ${pos.y}px)`,
-      }}
+      transform={`translate(${pos.x}, ${pos.y})`}
+      style={{ cursor: "auto" as any }}
+      onMouseDown={onMouseDown as any}
+      onContextMenu={handleContextMenu as any}
+      data-zindex={zIndex}
     >
       {element}
       {entity && (
         <CanvasElementContextMenu show={showContextMenu} entity={entity} />
       )}
-    </div>
+    </g>
   );
 }

@@ -23,38 +23,29 @@ export default function Gate({ gateType, entity, onPinClick }: Props) {
   };
 
   return (
-    <div className="relative">
-      <svg
-        className="overflow-visible"
-        style={{
-          width: `${gateType.width}px`,
-          height: `${gateType.height}px`,
-        }}
+    <g className="overflow-visible">
+      {gateType.icon || (
+        <rect
+          className="fill-violet-400 dark:fill-violet-500"
+          width={gateType.width}
+          height={gateType.height}
+          rx="5"
+        />
+      )}
+      <text
+        className="fill-indigo-800 dark:fill-indigo-950 select-none"
+        x={gateType.width / 2 + gateType.nameOffset.x}
+        y={gateType.height / 2 + gateType.nameOffset.y}
+        dominantBaseline="middle"
+        textAnchor="middle"
+        fontWeight={"bold"}
+        fontSize={18}
       >
-        {gateType.icon || (
-          <rect
-            className="fill-violet-400 dark:fill-violet-500"
-            width={gateType.width}
-            height={gateType.height}
-            rx="5"
-          />
-        )}
-        <text
-          className="fill-indigo-800 dark:fill-indigo-950 select-none"
-          x={gateType.width / 2 + gateType.nameOffset.x}
-          y={gateType.height / 2 + gateType.nameOffset.y}
-          dominantBaseline="middle"
-          textAnchor="middle"
-          fontWeight={"bold"}
-          fontSize={18}
-          fontFamily={"Inter"}
-        >
-          {gateType.name}
-        </text>
-      </svg>
+        {gateType.name}
+      </text>
       {createPins(gateType, Flow.In, handlePinClick)}
       {createPins(gateType, Flow.Out, handlePinClick)}
-    </div>
+    </g>
   );
 }
 

@@ -20,51 +20,48 @@ export default function TerminalGroup({ group }: Props) {
   const flow = firstTerminal.flow
 
   const xOffset = flow == Flow.In ? -25 : 100;
-  const textXOffset = flow == Flow.In ? -130 : 90;
+  const textXOffset = flow == Flow.In ? -12 : 90;
   const endsXOffset = flow == Flow.In ? 0 : -16;
 
   return (
-    <div
-      className="absolute"
-      style={{
-        transform: `translate(${origin.x}px, ${origin.y}px)`,
-      }}
-    >
-       <h1
-        className="absolute text-violet-500 text-4xl font-medium w-30"
-        style={{
-          transform: `translate(${textXOffset}px, ${(lastTerminal.pos.y - origin.y) / 2 + -4}px)`,
-          textAlign: flow == Flow.In ? "end" : "start"
-        }}
+    <g transform={`translate(${origin.x}, ${origin.y})`}>
+      <text
+        className="fill-violet-500 text-4xl font-medium"
+        x={textXOffset}
+        y={(lastTerminal.pos.y - origin.y) / 2 + 18}
+        textAnchor={flow == Flow.In ? "end" : "start"}
+        dominantBaseline="middle"
       >
         {result}
-      </h1>
-      <div
-        className="absolute w-5 h-1 bg-darkest-light dark:bg-light-dark"
-        style={{
-          transform: `translate(${xOffset + endsXOffset}px, ${-6}px)`,
-        }}
+      </text>
+      <rect
+        className="fill-darkest-light dark:fill-light-dark"
+        x={xOffset + endsXOffset}
+        y={-6}
+        width={20}
+        height={4}
       />
-      <div
-        className="absolute w-5 h-1 bg-darkest-light dark:bg-light-dark"
-        style={{
-          transform: `translate(${xOffset + endsXOffset}px, ${lastTerminal.pos.y - origin.y + 36}px)`,
-        }}
-      />     
-      <div
-        className="absolute w-1 bg-darkest-light dark:bg-light-dark"
-        style={{
-          height: `${(lastTerminal.pos.y - origin.y + 36 + 6 + 6) / 2 - 20}px`,
-          transform: `translate(${xOffset}px, ${-6}px)`,
-        }}
+      <rect
+        className="fill-darkest-light dark:fill-light-dark"
+        x={xOffset + endsXOffset}
+        y={lastTerminal.pos.y - origin.y + 36}
+        width={20}
+        height={4}
       />
-      <div
-        className="absolute w-1 bg-darkest-light dark:bg-light-dark"
-        style={{
-          height: `${(lastTerminal.pos.y - origin.y + 36 + 6 + 6) / 2 - 20}px`,
-          transform: `translate(${xOffset}px, ${(lastTerminal.pos.y - origin.y + 36 + 6 + 6) / 2 + 10}px)`,
-        }}
+      <rect
+        className="fill-darkest-light dark:fill-light-dark"
+        x={xOffset}
+        y={-6}
+        width={4}
+        height={(lastTerminal.pos.y - origin.y + 36 + 6 + 6) / 2 - 20}
       />
-    </div>
+      <rect
+        className="fill-darkest-light dark:fill-light-dark"
+        x={xOffset}
+        y={(lastTerminal.pos.y - origin.y + 36 + 6 + 6) / 2 + 10}
+        width={4}
+        height={(lastTerminal.pos.y - origin.y + 36 + 6 + 6) / 2 - 20}
+      />
+    </g>
   );
 }

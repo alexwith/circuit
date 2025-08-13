@@ -130,9 +130,12 @@ export default function CanvasElements({ canvasRef }: Props) {
     }
   };
 
+  // Sort entities by z-index so drawing order matches layering
+  const sortedEntities = [...entities].sort((a, b) => a.getZIndex() - b.getZIndex());
+
   return (
     <>
-      {entities.map((entity, key) => {
+      {sortedEntities.map((entity, key) => {
         const element = createElement(entity);
         return (
           element && (

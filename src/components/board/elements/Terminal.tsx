@@ -4,8 +4,6 @@ import { PinEntity } from "../../../entities/canvas/PinEntity";
 import { TerminalEntity } from "../../../entities/canvas/TerminalEntity";
 import Pin from "./Pin";
 import { useCanvasStore } from "../../../store/canvasStore";
-import DynamicInput from "../../common/DynamicInput";
-import { dispatchElementChange } from "../../../libs/canvasElementChangeEvent";
 
 type Props = {
   flow: Flow;
@@ -14,8 +12,7 @@ type Props = {
 };
 
 export default function Terminal({ flow, entity, onPinClick }: Props) {
-  const simulate = useCanvasStore((actions) => actions.simulate);
-  const computeTruthTable = useCanvasStore((actions) => actions.computeTruthTable);
+  const simulate = useCanvasStore((actions) => actions.simulate);  
 
   const handlePinClick = () => {
     if (!entity || !onPinClick) {
@@ -35,51 +32,34 @@ export default function Terminal({ flow, entity, onPinClick }: Props) {
     simulate();
   };
 
-  const handleNameChange = (name: string) => {
-    if (!entity) {
-      return;
-    }
-
-    entity.name = name;
-    computeTruthTable();
-    dispatchElementChange();
-  };
-
   return (
-    <div className="relative w-18 h-8">
-      <div
-        className="absolute z-10 border-4 border-dark-light dark:border-light-dark bg-darkest-light dark:bg-dark w-8 h-8 rounded-full hover:border-violet-500"
-        style={{
-          left: `${flow === Flow.In ? 0 : 44}px`,
-          background: entity?.pin.active ? "var(--color-red-500)" : "",
-        }}
-        onClick={handleTerminalClick}
-      />
-      <div
-        className="absolute w-8 h-2 bg-dark-light dark:bg-light-dark"
-        style={{
-          left: `${flow === Flow.In ? 28 : 13}px`,
-          top: `${12}px`,
-        }}
+    <g>      
+      <rect
+        className="fill-dark-light dark:fill-light-dark"
+        x={flow === Flow.In ? 30 : 13}
+        y={12}
+        width={28}
+        height={8}
       />
       <Pin offset={TERMINAL_PIN_OFFSET(flow)} onClick={handlePinClick} />
-      <div
-        className="absolute z-20"
-        style={{
-          left: flow === Flow.In ? "75px" : "",
-          right: flow === Flow.Out ? "75px" : "",
-          top: `${5}px`,
-          display: entity ? "block" : "none",
-        }}
-      >
-        <DynamicInput
-          enabled={entity !== undefined}
-          className="select-none text-dark dark:text-light text-sm font-medium rounded-sm px-1 bg-light dark:bg-dark border-1 border-dark-light dark:border-light-dark"
-          defaultValue={entity?.name || ""}
-          onChange={handleNameChange}
-          maxLength={10}
-        />
-      </div>
-    </div>
+      {entity && (
+        <text
+          className="fill-dark dark:fill-light text-normal font-medium select-none"
+          x={flow === Flow.In ? 75 : -5}
+          y={20}
+          textAnchor={flow === Flow.In ? "start" : "end"}     
+        >
+          {entity?.name}
+        </text>
+      )}
+      <circle
+        className="fill-darkest-light dark:fill-dark stroke-4 stroke-dark-light dark:stroke-light-dark hover:stroke-violet-500"
+        cx={flow === Flow.In ? 16 : 56}
+        cy={16}
+        r={14}
+        style={{ fill: entity?.pin.active ? "var(--color-red-500)" : undefined }}
+        onClick={handleTerminalClick as any}
+      />
+    </g>
   );
 }
