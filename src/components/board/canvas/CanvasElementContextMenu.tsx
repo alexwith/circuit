@@ -5,28 +5,18 @@ import { WireEntity } from "../../../entities/canvas/WireEntity";
 import { TerminalEntity } from "../../../entities/canvas/TerminalEntity";
 import { GateEntity } from "../../../entities/canvas/GateEntity";
 import { PinEntity } from "../../../entities/canvas/PinEntity";
-import { dispatchElementChange } from "../../../libs/canvasElementChangeEvent";
 
 type Props = {
   show: boolean;
   entity: CanvasEntity;
+  handleRenameClick: () => void;
 };
 
-export default function CanvasElementContextMenu({ show, entity }: Props) {
+export default function CanvasElementContextMenu({ show, entity, handleRenameClick }: Props) {  
   const entities = useCanvasStore((state) => state.entities);
   const zoom = useCanvasStore((state) => state.zoom);
 
   const removeEntity = useCanvasStore((actions) => actions.removeEntity);
-  const computeTruthTable = useCanvasStore((actions) => actions.computeTruthTable);
-
-  const handleRenameClick = () => {
-    if (entity instanceof TerminalEntity) {
-      const value = window.prompt("Rename terminal", entity.name) || "?";
-      entity.name = value.slice(0, 10);
-      computeTruthTable();
-      dispatchElementChange();
-    }
-  };
 
   const handleDeleteClick = useCallback(() => {
     if (entity instanceof TerminalEntity || entity instanceof GateEntity) {
@@ -74,60 +64,36 @@ export default function CanvasElementContextMenu({ show, entity }: Props) {
   const canRename = entity instanceof TerminalEntity;
 
   return (
-    <g transform={`translate(80, 0) scale(${1 / zoom})`}>
-      <rect
-        className="fill-dark stroke-violet-500"
-        x={0}
-        y={0}
-        rx={6}
-        width={140}
-        height={canRename ? 100 : 70}
-        strokeWidth={1}
-      />
-      <text
-        className="fill-dark-light font-bold"
-        x={70}
-        y={20}
-        textAnchor="middle"
-        dominantBaseline="middle"
-      >
-        {name}
-      </text>
-      <g
-        onClick={() => {
-          handleDeleteClick();
-        }}
-        style={{ cursor: "pointer" as any }}
-      >
+    <>
+      <g transform={`translate(80, 0) scale(${1 / zoom})`}>
         <rect
-          className="fill-light-dark hover:stroke-violet-500"
-          x={10}
-          y={32}
-          rx={4}
-          width={120}
-          height={25}
+          className="fill-dark stroke-violet-500"
+          x={0}
+          y={0}
+          rx={6}
+          width={140}
+          height={canRename ? 100 : 70}
+          strokeWidth={1}
         />
         <text
-          className="font-medium fill-dark-light pointer-events-none"
+          className="fill-dark-light font-bold"
           x={70}
-          y={38}
+          y={20}
           textAnchor="middle"
-          dominantBaseline="hanging"
+          dominantBaseline="middle"
         >
-          Delete
+          {name}
         </text>
-      </g>
-      {canRename && (
         <g
           onClick={() => {
-            handleRenameClick();
+            handleDeleteClick();
           }}
           style={{ cursor: "pointer" as any }}
         >
           <rect
             className="fill-light-dark hover:stroke-violet-500"
             x={10}
-            y={64}
+            y={32}
             rx={4}
             width={120}
             height={25}
@@ -135,14 +101,40 @@ export default function CanvasElementContextMenu({ show, entity }: Props) {
           <text
             className="font-medium fill-dark-light pointer-events-none"
             x={70}
-            y={70}
+            y={38}
             textAnchor="middle"
             dominantBaseline="hanging"
           >
-            Rename
+            Delete
           </text>
         </g>
-      )}
-    </g>
+        {canRename && (
+          <g
+            onClick={() => {
+              handleRenameClick();
+            }}
+            style={{ cursor: "pointer" as any }}
+          >
+            <rect
+              className="fill-light-dark hover:stroke-violet-500"
+              x={10}
+              y={64}
+              rx={4}
+              width={120}
+              height={25}
+            />
+            <text
+              className="font-medium fill-dark-light pointer-events-none"
+              x={70}
+              y={70}
+              textAnchor="middle"
+              dominantBaseline="hanging"
+            >
+              Rename
+            </text>
+          </g>
+        )}
+      </g>      
+    </>
   );
 }
