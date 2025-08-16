@@ -65,11 +65,9 @@ export default function Canvas() {
     }
 
     const canvasRect = ref.current.getBoundingClientRect();
-    const dropOffset: Pos = componentDrag.offset;
-
     const pos: Pos = {
-      x: (event.clientX - canvasRect.left - canvasPos.x) / zoom - dropOffset.x,
-      y: (event.clientY - canvasRect.top - canvasPos.y) / zoom - dropOffset.y,
+      x: (event.clientX - canvasRect.left - canvasPos.x) / zoom,
+      y: (event.clientY - canvasRect.top - canvasPos.y) / zoom,
     };
 
     const metadata = componentDrag.metadata;

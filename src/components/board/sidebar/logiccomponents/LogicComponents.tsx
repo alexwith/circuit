@@ -73,7 +73,7 @@ export default function LogicComponents() {
                   type="range"
                   min="2"
                   max="8"
-                  value={groupSize}            
+                  value={groupSize}
                   onChange={(event) => {
                     setGroupSize(parseInt(event.target.value));
                   }}
@@ -83,11 +83,13 @@ export default function LogicComponents() {
                 type={EntityType.InTerminal}
                 name="In Terminal Group"
                 displayElement={
-                  <div className="flex flex-col gap-2">
+                  <g>
                     {[...Array(groupSize)].map((_, i) => (
-                      <Terminal key={i} flow={Flow.In} />
+                      <g key={i} transform={`translate(0,${i * 40})`}>
+                        <Terminal key={i} flow={Flow.In} />
+                      </g>
                     ))}
-                  </div>
+                  </g>
                 }
                 metadata={{ groupSize }}
               />
@@ -95,11 +97,13 @@ export default function LogicComponents() {
                 type={EntityType.OutTerminal}
                 name="Out Terminal Group"
                 displayElement={
-                  <div className="flex flex-col gap-2">
+                  <g>
                     {[...Array(groupSize)].map((_, i) => (
-                      <Terminal key={i} flow={Flow.Out} />
+                      <g key={i} transform={`translate(0,${i * 40})`}>
+                        <Terminal key={i} flow={Flow.Out} />
+                      </g>
                     ))}
-                  </div>
+                  </g>
                 }
                 metadata={{ groupSize }}
               />
