@@ -58,7 +58,7 @@ export default function Terminal({ flow, entity, onPinClick }: Props) {
         cy={16}
         r={14}
         style={{ fill: entity?.pin.active ? "var(--color-red-500)" : undefined }}
-        onClick={handleTerminalClick as any}
+        onClick={handleTerminalClick}
       />
     </g>
   );

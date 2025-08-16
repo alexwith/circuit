@@ -88,7 +88,7 @@ export default function CanvasElementContextMenu({ show, entity, handleRenameCli
           onClick={() => {
             handleDeleteClick();
           }}
-          style={{ cursor: "pointer" as any }}
+          style={{ cursor: "pointer" }}
         >
           <rect
             className="fill-light-dark hover:stroke-violet-500"
@@ -113,7 +113,7 @@ export default function CanvasElementContextMenu({ show, entity, handleRenameCli
             onClick={() => {
               handleRenameClick();
             }}
-            style={{ cursor: "pointer" as any }}
+            style={{ cursor: "pointer" }}
           >
             <rect
               className="fill-light-dark hover:stroke-violet-500"

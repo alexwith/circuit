@@ -24,9 +24,9 @@ export default function CanvasElement({ entity, pos, zIndex, element, onMouseDow
       <g
         ref={ref}
         transform={`translate(${pos.x}, ${pos.y})`}
-        style={{ cursor: "auto" as any }}
-        onMouseDown={onMouseDown as any}
-        onContextMenu={handleContextMenu as any}
+        style={{ cursor: "auto" }}
+        onMouseDown={onMouseDown}
+        onContextMenu={handleContextMenu}
         data-zindex={zIndex}
       >
         {element}

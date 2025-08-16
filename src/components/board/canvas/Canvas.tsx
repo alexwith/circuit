@@ -162,7 +162,7 @@ export default function Canvas() {
       <g
         ref={elementsRef}
         transform={`translate(${canvasPos.x}, ${canvasPos.y}) scale(${zoom})`}
-        style={{ overflow: "visible" as any }}
+        style={{ overflow: "visible" }}
       >
         <CanvasElements canvasRef={ref} />
       </g>
