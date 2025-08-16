@@ -4,8 +4,7 @@ export type Pos = {
 };
 
 export type ComponentDrag = {
-  type: EntityType;
-  offset: Pos;
+  type: EntityType;  
   metadata: unknown;
 };
 

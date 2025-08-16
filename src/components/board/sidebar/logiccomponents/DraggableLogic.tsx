@@ -1,7 +1,7 @@
-import ReactDOM from "react-dom/client";
 import { DragEvent, ReactNode, useEffect, useState } from "react";
 import { useCanvasStore } from "../../../../store/canvasStore";
-import { EntityType, Pos } from "../../../../common/types";
+import { EntityType} from "../../../../common/types";
+import ReactDOM from "react-dom/client";
 
 type Props = {
   type: EntityType;
@@ -22,36 +22,42 @@ export default function DraggableLogic({ type, metadata, name, displayElement }:
       return;
     }
 
-    const rect = dragImage.getBoundingClientRect();
-    const offset: Pos = { x: rect.width / 2, y: rect.height / 2 };
-    event.dataTransfer.setDragImage(dragImage, offset.x, offset.y);
+    event.dataTransfer.setDragImage(dragImage, 150 * zoom, 0);
 
-    setComponentDrag({
-      type,
-      offset,
-      metadata,
-    });
+    setComponentDrag({ type, metadata });
   };
 
   const handleDragEnd = () => {
     setComponentDrag(null);
   };
 
+  /*
+  The following logic is a bit all over the place and does
+  a lot of tricky things to be able to render an SVG
+  with overflows as the drag image
+  */
   useEffect(() => {
     const dragImage = document.createElement("div");
-    dragImage.style.top = "-1000px";
-    dragImage.style.left = "-1000px";
-    dragImage.style.position = "fixed";    
+    dragImage.style.top = "-9999px";
+    dragImage.style.left = "-9999px";
+    dragImage.style.position = "fixed";
     document.body.appendChild(dragImage);
 
     const zoomedDisplayElement = (
-      <div className="absolute origin-center" style={{ transform: `scale(${zoom})`}}>
-        {displayElement}
-      </div>
+      <svg
+        className="absolute origin-center"
+        style={{ transform: `scale(${zoom})` }}
+        overflow="visible"
+        width={600}
+        height={600}
+        viewBox="-100 0 500 600"
+      >        
+        {displayElement}        
+      </svg>
     );
 
-    const root = ReactDOM.createRoot(dragImage);    
-    root.render(zoomedDisplayElement);    
+    const root = ReactDOM.createRoot(dragImage);
+    root.render(zoomedDisplayElement);
 
     setDragImage(dragImage);
 

@@ -13,7 +13,7 @@ import { dispatchElementChange } from "../../../libs/canvasElementChangeEvent";
 export default function Canvas() {
   const ref = useRef<SVGSVGElement | null>(null);
   const draggableRef = useRef<SVGRectElement>(null);
-  const elementsRef = useRef<SVGSVGElement>(null);
+  const elementsRef = useRef<SVGGElement>(null);
 
   const zoom = useCanvasStore((state) => state.zoom);
   const canvasPos = useCanvasStore((state) => state.pos);
@@ -32,7 +32,7 @@ export default function Canvas() {
     ref,
     updatePos,
     targetPredicate: (target) => {
-      return target === draggableRef.current || target === elementsRef.current;
+      return target === draggableRef.current;
     },
   });
 
@@ -65,11 +65,9 @@ export default function Canvas() {
     }
 
     const canvasRect = ref.current.getBoundingClientRect();
-    const dropOffset: Pos = componentDrag.offset;
-
     const pos: Pos = {
-      x: (event.clientX - canvasRect.left - canvasPos.x) / zoom - dropOffset.x,
-      y: (event.clientY - canvasRect.top - canvasPos.y) / zoom - dropOffset.y,
+      x: (event.clientX - canvasRect.left - canvasPos.x) / zoom,
+      y: (event.clientY - canvasRect.top - canvasPos.y) / zoom,
     };
 
     const metadata = componentDrag.metadata;
@@ -161,16 +159,13 @@ export default function Canvas() {
         fill="transparent"
         cursor={dragging ? "grabbing" : "grab"}
       />
-      <foreignObject
+      <g
         ref={elementsRef}
-        className="relative overflow-visible"
-        width="100%"
-        height="100%"
         transform={`translate(${canvasPos.x}, ${canvasPos.y}) scale(${zoom})`}
-        cursor={dragging ? "grabbing" : "grab"}
+        style={{ overflow: "visible" }}
       >
         <CanvasElements canvasRef={ref} />
-      </foreignObject>
+      </g>
     </svg>
   );
 }

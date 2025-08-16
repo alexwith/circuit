@@ -130,9 +130,23 @@ export default function CanvasElements({ canvasRef }: Props) {
     }
   };
 
+  // Sort entities by z-index so drawing order matches layering
+  const sortedEntities = [...entities].sort((a, b) => a.getZIndex() - b.getZIndex());
+
   return (
     <>
-      {entities.map((entity, key) => {
+    {isWiring && (
+        <WiringWire
+          canvasRef={canvasRef}
+          startPos={wiringStartPin!.getPos()}
+          points={wiringPoints}
+          setPoints={setWiringPoints}
+          onCancel={() => {
+            setIsWiring(false);
+          }}
+        />
+      )}
+      {sortedEntities.map((entity, key) => {
         const element = createElement(entity);
         return (
           element && (
@@ -146,18 +160,7 @@ export default function CanvasElements({ canvasRef }: Props) {
             />
           )
         );
-      })}
-      {isWiring && (
-        <WiringWire
-          canvasRef={canvasRef}
-          startPos={wiringStartPin!.getPos()}
-          points={wiringPoints}
-          setPoints={setWiringPoints}
-          onCancel={() => {
-            setIsWiring(false);
-          }}
-        />
-      )}
+      })}      
       {entities.map((entity, key) => {
         if (!(entity instanceof TerminalEntity)) {
           return;
@@ -170,7 +173,7 @@ export default function CanvasElements({ canvasRef }: Props) {
         }
 
         return <TerminalGroup key={key} group={terminal.group} />;
-      })}
+      })}      
     </>
   );
 }

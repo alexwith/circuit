@@ -6,16 +6,15 @@ type Props = {
   onClick: () => void;
 };
 
+const radius = PIN_SIZE / 2;
+
 export default function Pin({ offset, onClick }: Props) {
   return (
-    <div
-      className="absolute bg-dark-light dark:bg-light-dark rounded-full hover:border-2 hover:border-violet-500"
-      style={{
-        width: `${PIN_SIZE}px`,
-        height: `${PIN_SIZE}px`,
-        left: `${offset.x}px`,
-        top: `${offset.y}px`,
-      }}
+    <circle
+      className="fill-dark-light dark:fill-light-dark hover:stroke-violet-500 hover:stroke-2"
+      cx={offset.x + radius}
+      cy={offset.y + radius}
+      r={radius}
       onClick={onClick}
     />
   );

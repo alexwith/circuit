@@ -1,8 +1,10 @@
-import { ReactNode, useRef } from "react";
+import { ReactNode, useRef, useState } from "react";
 import useContextMenu from "../../../hooks/useContextMenu";
 import CanvasElementContextMenu from "./CanvasElementContextMenu";
 import { CanvasEntity } from "../../../entities/canvas/CanvasEntity";
 import { Pos } from "../../../common/types";
+import ReactDOM from "react-dom";
+import CanvasElementRenameMenu from "./CanvasElementRenameMenu";
 
 type Props = {
   entity: CanvasEntity | undefined;
@@ -13,24 +15,35 @@ type Props = {
 };
 
 export default function CanvasElement({ entity, pos, zIndex, element, onMouseDown }: Props) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<SVGGElement>(null);
   const { handleContextMenu, showContextMenu } = useContextMenu();
+  const [renaming, setRenaming] = useState<boolean>(false);
 
   return (
-    <div
-      ref={ref}
-      className="absolute cursor-auto"
-      onMouseDown={onMouseDown}
-      onContextMenu={handleContextMenu}
-      style={{
-        zIndex,
-        transform: `translate(${pos.x}px, ${pos.y}px)`,
-      }}
-    >
-      {element}
-      {entity && (
-        <CanvasElementContextMenu show={showContextMenu} entity={entity} />
-      )}
-    </div>
+    <>
+      <g
+        ref={ref}
+        transform={`translate(${pos.x}, ${pos.y})`}
+        style={{ cursor: "auto" }}
+        onMouseDown={onMouseDown}
+        onContextMenu={handleContextMenu}
+        data-zindex={zIndex}
+      >
+        {element}
+        {entity && (
+          <CanvasElementContextMenu
+            show={showContextMenu}
+            entity={entity}
+            handleRenameClick={() => setRenaming(true)}
+          />
+        )}
+      </g>
+      {entity &&
+        renaming &&
+        ReactDOM.createPortal(
+          <CanvasElementRenameMenu entity={entity} onClose={() => setRenaming(false)} />,
+          document.body!
+        )}
+    </>
   );
 }
