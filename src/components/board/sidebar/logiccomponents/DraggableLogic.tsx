@@ -45,11 +45,10 @@ export default function DraggableLogic({ type, metadata, name, displayElement }:
 
     const zoomedDisplayElement = (
       <svg
-        className="absolute origin-center"
-        style={{ transform: `scale(${zoom})` }}
+        className="absolute origin-center"                
         overflow="visible"
-        width={600}
-        height={600}
+        width={600 * zoom}
+        height={600 * zoom}
         viewBox="-100 0 500 600"
       >        
         {displayElement}        
