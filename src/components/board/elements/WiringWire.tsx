@@ -76,7 +76,7 @@ export default function WiringWire({ canvasRef, startPos, points, setPoints, onC
       />
       <g transform={`translate(${startPos.x - 80}, ${startPos.y - 45})`}>
         <rect className="fill-light dark:fill-dark stroke-dark-light dark:stroke-light-dark" x={-4} y={-16} width={180} height={26} rx={4} strokeWidth={1} />
-        <text className="fill-dark dark:fill-light text-sm" x={5} y={-2} dominantBaseline="middle">
+        <text className="fill-dark dark:fill-light text-sm" x={7} y={2}>
           Press
           <tspan className="font-bold"> Esc</tspan>
           {" "}to stop wiring
